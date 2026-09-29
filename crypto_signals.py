@@ -1,30 +1,28 @@
 #!/usr/bin/env python3
 """
-Уведомления о торговых сигналах по криптовалюте.
+Торговые сигналы по криптовалюте с рекомендациями: когда покупать и когда выходить.
 
-Берёт свечи с биржи (публичный API, ключ не нужен), считает индикаторы
-и шлёт сигналы в Telegram. Если Telegram не настроен — печатает в консоль.
+Как работает стратегия (только по закрытым свечам):
+  ПОКУПКА, если:
+    - EMA 9 пересекла EMA 21 снизу вверх ИЛИ RSI вышел из перепроданности (<30)
+    - и цена выше EMA 200 (фильтр тренда: против тренда не покупаем)
+  Сразу считаются уровни по ATR (средний размах свечи):
+    - стоп-лосс = вход − 1.5 × ATR
+    - цель      = вход + 3 × ATR   (риск/прибыль 1:2)
+  ВЫХОД (бот сам следит за сделкой и пишет):
+    - цена дошла до стоп-лосса или до цели
+    - или разворот: EMA 9 пересекла EMA 21 вниз / RSI вышел из перекупленности (>70)
+  Всплеск объёма отмечается в сообщении как подтверждение.
+  Если сделки нет, а тренд вниз и появился сигнал разворота —
+  придёт предупреждение «если держишь монету, подумай о выходе».
 
-Сигналы (только по закрытым свечам):
-  - EMA 9 пересекла EMA 21 (вверх / вниз)
-  - RSI вышел из зоны перепроданности (<30) или перекупленности (>70)
-  - Всплеск объёма (объём свечи > среднего за 20 свечей в N раз)
+Режимы:
+  - на своём компьютере: цикл, проверка каждые CHECK_EVERY секунд
+  - в GitHub Actions (RUN_ONCE=1): одна проверка и выход
 
-Два режима:
-  - на своём компьютере: работает в цикле, проверяет каждые CHECK_EVERY секунд
-  - в GitHub Actions (RUN_ONCE=1): одна проверка и выход, запуск по расписанию
+Биржи (EXCHANGE): binance (пары BTCUSDT) или coinbase (пары BTC-USD).
 
-Биржи (EXCHANGE):
-  - binance  — пары вида BTCUSDT (по умолчанию для своего компьютера)
-  - coinbase — пары вида BTC-USD (для GitHub Actions: Binance блокирует серверы в США)
-
-Запуск на своём компьютере:
-  pip install requests
-  export TG_TOKEN="123:ABC"        # токен бота от @BotFather
-  export TG_CHAT_ID="123456789"    # твой chat id
-  python crypto_signals.py
-
-Это не финансовый совет: сигналы — просто индикаторы, решения принимай сам.
+Это сигналы механической стратегии, а не финансовый совет.
 """
 
 import json
@@ -32,33 +30,38 @@ import logging
 import os
 import sys
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 import requests
 
-# ---------- Настройки (можно менять здесь или через переменные окружения) ----------
+# ---------- Настройки ----------
 EXCHANGE = (os.getenv("EXCHANGE") or "binance").lower()
 DEFAULT_SYMBOLS = {
     "binance": "BTCUSDT,ETHUSDT,SOLUSDT",
     "coinbase": "BTC-USD,ETH-USD,SOL-USD",
 }
 INTERVAL = os.getenv("INTERVAL") or "1h"             # binance: 1m,5m,15m,1h,4h,1d; coinbase: 1m,5m,15m,1h,6h,1d
-CHECK_EVERY = int(os.getenv("CHECK_EVERY") or 60)     # пауза между проверками, сек (для своего компьютера)
-RUN_ONCE = os.getenv("RUN_ONCE") == "1"               # одна проверка и выход (для GitHub Actions)
+CHECK_EVERY = int(os.getenv("CHECK_EVERY") or 60)
+RUN_ONCE = os.getenv("RUN_ONCE") == "1"
 
 EMA_FAST = 9
 EMA_SLOW = 21
+TREND_EMA = 200     # фильтр тренда
 RSI_PERIOD = 14
 RSI_LOW = 30
 RSI_HIGH = 70
 VOL_WINDOW = 20
 VOL_MULT = 2.5
+ATR_PERIOD = 14
+STOP_ATR = 1.5      # стоп-лосс = вход − STOP_ATR × ATR
+TAKE_ATR = 3.0      # цель      = вход + TAKE_ATR × ATR
 
 TG_TOKEN = os.getenv("TG_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 
 STATE_FILE = Path(__file__).with_name("signals_state.json")
-# ------------------------------------------------------------------------------------
+# --------------------------------
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("signals")
@@ -66,53 +69,70 @@ log = logging.getLogger("signals")
 COINBASE_GRANULARITY = {"1m": 60, "5m": 300, "15m": 900, "1h": 3600, "6h": 21600, "1d": 86400}
 
 
+# ---------- Данные с бирж ----------
 def fetch_binance(symbol, interval):
     r = requests.get(
         "https://api.binance.com/api/v3/klines",
-        params={"symbol": symbol, "interval": interval, "limit": 200},
+        params={"symbol": symbol, "interval": interval, "limit": 500},
         timeout=10,
     )
     r.raise_for_status()
     now_ms = time.time() * 1000
-    # k[6] — время закрытия свечи; берём только закрытые
     return [
-        {"time": k[0], "close": float(k[4]), "volume": float(k[5])}
-        for k in r.json() if k[6] < now_ms
+        {"time": k[0], "high": float(k[2]), "low": float(k[3]),
+         "close": float(k[4]), "volume": float(k[5])}
+        for k in r.json() if k[6] < now_ms  # только закрытые свечи
     ]
 
 
-def fetch_coinbase(symbol, interval):
+def _iso(ts):
+    return datetime.fromtimestamp(ts, timezone.utc).isoformat()
+
+
+def fetch_coinbase(symbol, interval, pages=2):
+    """Coinbase отдаёт до 300 свечей за запрос, берём 2 страницы (нужно для EMA 200)."""
     gran = COINBASE_GRANULARITY[interval]
-    r = requests.get(
-        f"https://api.exchange.coinbase.com/products/{symbol}/candles",
-        params={"granularity": gran},
-        headers={"User-Agent": "crypto-signals"},
-        timeout=10,
-    )
-    r.raise_for_status()
+    end = int(time.time()) // gran * gran + gran
+    rows = {}
+    for _ in range(pages):
+        start = end - 299 * gran
+        r = requests.get(
+            f"https://api.exchange.coinbase.com/products/{symbol}/candles",
+            params={"granularity": gran, "start": _iso(start), "end": _iso(end)},
+            headers={"User-Agent": "crypto-signals"},
+            timeout=10,
+        )
+        r.raise_for_status()
+        for k in r.json():  # [time, low, high, open, close, volume]
+            rows[k[0]] = k
+        end = start
     now = time.time()
-    rows = sorted(r.json(), key=lambda k: k[0])  # Coinbase отдаёт от новых к старым
-    # формат: [time, low, high, open, close, volume]; берём только закрытые
     return [
-        {"time": k[0] * 1000, "close": float(k[4]), "volume": float(k[5])}
-        for k in rows if k[0] + gran <= now
+        {"time": k[0] * 1000, "high": float(k[2]), "low": float(k[1]),
+         "close": float(k[4]), "volume": float(k[5])}
+        for t, k in sorted(rows.items()) if t + gran <= now  # только закрытые
     ]
 
 
 FETCHERS = {"binance": fetch_binance, "coinbase": fetch_coinbase}
 
 
+# ---------- Индикаторы ----------
 def ema(values, period):
+    """EMA; первое значение — простое среднее первых period свечей, до него None."""
+    out = [None] * len(values)
+    if len(values) < period:
+        return out
     k = 2 / (period + 1)
-    out, prev = [], None
-    for v in values:
-        prev = v if prev is None else v * k + prev * (1 - k)
-        out.append(prev)
+    prev = sum(values[:period]) / period
+    out[period - 1] = prev
+    for i in range(period, len(values)):
+        prev = values[i] * k + prev * (1 - k)
+        out[i] = prev
     return out
 
 
 def rsi(values, period=14):
-    """RSI по Уайлдеру. Для первых свечей — None."""
     out = [None] * len(values)
     if len(values) <= period:
         return out
@@ -132,32 +152,71 @@ def rsi(values, period=14):
     return out
 
 
-def find_signals(candles):
-    """Проверяет последнюю закрытую свечу. Возвращает список (код, текст)."""
+def atr(highs, lows, closes, period=14):
+    out = [None] * len(closes)
+    if len(closes) <= period:
+        return out
+    tr = [highs[i] - lows[i] if i == 0 else
+          max(highs[i] - lows[i], abs(highs[i] - closes[i - 1]), abs(lows[i] - closes[i - 1]))
+          for i in range(len(closes))]
+    prev = sum(tr[1:period + 1]) / period
+    out[period] = prev
+    for i in range(period + 1, len(closes)):
+        prev = (prev * (period - 1) + tr[i]) / period
+        out[i] = prev
+    return out
+
+
+def analyze(candles):
+    """Индикаторы и события на последней закрытой свече."""
     closes = [c["close"] for c in candles]
+    highs = [c["high"] for c in candles]
+    lows = [c["low"] for c in candles]
     vols = [c["volume"] for c in candles]
     i = len(closes) - 1
-    signals = []
 
-    ef, es = ema(closes, EMA_FAST), ema(closes, EMA_SLOW)
-    if ef[i - 1] <= es[i - 1] and ef[i] > es[i]:
-        signals.append(("EMA_UP", f"🟢 EMA {EMA_FAST} пересекла EMA {EMA_SLOW} снизу вверх"))
-    if ef[i - 1] >= es[i - 1] and ef[i] < es[i]:
-        signals.append(("EMA_DOWN", f"🔴 EMA {EMA_FAST} пересекла EMA {EMA_SLOW} сверху вниз"))
-
+    ef, es, et = ema(closes, EMA_FAST), ema(closes, EMA_SLOW), ema(closes, TREND_EMA)
     r = rsi(closes, RSI_PERIOD)
+    a = atr(highs, lows, closes, ATR_PERIOD)
+
+    events = set()
+    if None not in (ef[i - 1], es[i - 1], ef[i], es[i]):
+        if ef[i - 1] <= es[i - 1] and ef[i] > es[i]:
+            events.add("EMA_UP")
+        if ef[i - 1] >= es[i - 1] and ef[i] < es[i]:
+            events.add("EMA_DOWN")
     if r[i - 1] is not None and r[i] is not None:
         if r[i - 1] < RSI_LOW <= r[i]:
-            signals.append(("RSI_UP", f"🟢 RSI вышел из перепроданности ({r[i]:.1f})"))
+            events.add("RSI_UP")
         if r[i - 1] > RSI_HIGH >= r[i]:
-            signals.append(("RSI_DOWN", f"🔴 RSI вышел из перекупленности ({r[i]:.1f})"))
+            events.add("RSI_DOWN")
 
+    vol_ratio = 0.0
     if i >= VOL_WINDOW:
         avg_vol = sum(vols[i - VOL_WINDOW:i]) / VOL_WINDOW
-        if avg_vol > 0 and vols[i] > avg_vol * VOL_MULT:
-            signals.append(("VOLUME", f"⚡ Всплеск объёма: x{vols[i] / avg_vol:.1f} к среднему"))
+        vol_ratio = vols[i] / avg_vol if avg_vol > 0 else 0.0
+        if vol_ratio > VOL_MULT:
+            events.add("VOLUME")
 
-    return signals, closes[i], r[i]
+    return {"time": candles[i]["time"], "price": closes[i], "rsi": r[i],
+            "trend": et[i], "atr": a[i], "events": events, "vol_ratio": vol_ratio}
+
+
+EVENT_TEXT = {
+    "EMA_UP": f"EMA {EMA_FAST} пересекла EMA {EMA_SLOW} вверх",
+    "EMA_DOWN": f"EMA {EMA_FAST} пересекла EMA {EMA_SLOW} вниз",
+    "RSI_UP": "RSI вышел из перепроданности",
+    "RSI_DOWN": "RSI вышел из перекупленности",
+}
+
+
+# ---------- Уведомления и состояние ----------
+def fmt(x):
+    return f"{x:.6g}"
+
+
+def pct(a, b):
+    return (b / a - 1) * 100
 
 
 def notify(text):
@@ -186,28 +245,95 @@ def save_state(state):
     STATE_FILE.write_text(json.dumps(state))
 
 
+# ---------- Логика стратегии ----------
 def check_symbol(symbol, state):
     candles = FETCHERS[EXCHANGE](symbol, INTERVAL)
-    if len(candles) < EMA_SLOW + RSI_PERIOD:
+    if len(candles) < EMA_SLOW + RSI_PERIOD + 2:
         raise ValueError(f"мало свечей ({len(candles)}), проверь название пары")
-    signals, price, rsi_now = find_signals(candles)
-    candle_time = candles[-1]["time"]
 
-    new = []
-    for code, text in signals:
-        key = f"{symbol}:{INTERVAL}:{code}"
-        if state.get(key) != candle_time:  # не повторяем сигнал по той же свече
-            state[key] = candle_time
-            new.append(text)
+    key = f"{symbol}:{INTERVAL}"
+    positions = state.setdefault("positions", {})
+    last_seen = state.setdefault("last_candle", {})
 
-    if new:
-        rsi_txt = f"{rsi_now:.1f}" if rsi_now is not None else "—"
-        msg = (
-            f"<b>{symbol}</b> · {INTERVAL}\n"
-            f"Цена: {price:g} · RSI: {rsi_txt}\n\n" + "\n".join(new)
+    a = analyze(candles)
+    prev_time = last_seen.get(key)
+    if prev_time == a["time"]:
+        log.info("%s: новой свечи нет", symbol)
+        return
+    last_seen[key] = a["time"]
+
+    title = f"<b>{symbol} · {INTERVAL}</b>"
+    rsi_txt = f"{a['rsi']:.1f}" if a["rsi"] is not None else "—"
+    trend_up = a["trend"] is None or a["price"] > a["trend"]
+    buy_ev = a["events"] & {"EMA_UP", "RSI_UP"}
+    sell_ev = a["events"] & {"EMA_DOWN", "RSI_DOWN"}
+
+    pos = positions.get(key)
+    if pos:
+        # Проверяем все свечи, закрывшиеся после входа и прошлой проверки
+        since = max(pos["time"], prev_time or 0)
+        reason, exit_price = None, None
+        for c in candles:
+            if c["time"] <= since:
+                continue
+            if c["low"] <= pos["stop"]:  # если за свечу задело и стоп, и цель — считаем стоп
+                reason, exit_price = "🛑 Сработал стоп-лосс", pos["stop"]
+                break
+            if c["high"] >= pos["target"]:
+                reason, exit_price = "🎯 Цель достигнута", pos["target"]
+                break
+        if not reason and sell_ev:
+            reason = "📉 Разворот: " + ", ".join(EVENT_TEXT[e] for e in sorted(sell_ev))
+            exit_price = a["price"]
+
+        if reason:
+            result = pct(pos["entry"], exit_price)
+            notify(
+                f"🔴 {title} — <b>ПРОДАВАТЬ / закрыть сделку</b>\n\n"
+                f"Причина: {reason}\n"
+                f"Вход: {fmt(pos['entry'])} → выход: {fmt(exit_price)}\n"
+                f"Результат: {result:+.2f}%"
+            )
+            del positions[key]
+            log.info("%s: выход (%s)", symbol, reason)
+        else:
+            log.info("%s: сделка открыта, держим (цена %s, стоп %s, цель %s)",
+                     symbol, fmt(a["price"]), fmt(pos["stop"]), fmt(pos["target"]))
+        return
+
+    if buy_ev and trend_up and a["atr"]:
+        entry = a["price"]
+        stop = entry - STOP_ATR * a["atr"]
+        target = entry + TAKE_ATR * a["atr"]
+        positions[key] = {"entry": entry, "stop": stop, "target": target, "time": a["time"]}
+
+        why = [EVENT_TEXT[e] for e in sorted(buy_ev)]
+        if a["trend"] is not None:
+            why.append(f"цена выше EMA {TREND_EMA} — тренд вверх")
+        if "VOLUME" in a["events"]:
+            why.append(f"объём x{a['vol_ratio']:.1f} к среднему — подтверждение")
+        notify(
+            f"🟢 {title} — <b>сигнал на ПОКУПКУ</b>\n\n"
+            f"Вход: {fmt(entry)}\n"
+            f"Стоп-лосс: {fmt(stop)} ({pct(entry, stop):+.1f}%)\n"
+            f"Цель: {fmt(target)} ({pct(entry, target):+.1f}%)\n"
+            f"Риск/прибыль: 1:{TAKE_ATR / STOP_ATR:g} · RSI: {rsi_txt}\n\n"
+            f"Почему: " + "; ".join(why) + "\n\n"
+            "Когда выходить — пришлю отдельное сообщение (стоп, цель или разворот).\n"
+            "Рискуй не больше 1–2% депозита на сделку. Это сигнал стратегии, не финансовый совет."
         )
-        notify(msg)
-        log.info("%s: %d сигнал(а)", symbol, len(new))
+        log.info("%s: покупка по %s", symbol, fmt(entry))
+    elif buy_ev:
+        log.info("%s: сигнал на покупку пропущен — цена ниже EMA %d (тренд вниз)", symbol, TREND_EMA)
+    elif sell_ev and not trend_up:
+        notify(
+            f"⚠️ {title} — <b>сигнал на продажу</b>\n\n"
+            + "; ".join(EVENT_TEXT[e] for e in sorted(sell_ev))
+            + f", цена ниже EMA {TREND_EMA} — тренд вниз.\n"
+            f"Цена: {fmt(a['price'])} · RSI: {rsi_txt}\n\n"
+            "Если держишь эту монету — стоит подумать о выходе. Покупать сейчас не стоит."
+        )
+        log.info("%s: предупреждение о продаже", symbol)
     else:
         log.info("%s: сигналов нет", symbol)
 
@@ -238,7 +364,7 @@ def main():
     state = load_state()
     if RUN_ONCE:
         errors = run_check(symbols, state)
-        sys.exit(1 if errors == len(symbols) else 0)  # красный запуск, если не удалось ни одной паре
+        sys.exit(1 if errors == len(symbols) else 0)
 
     while True:
         run_check(symbols, state)
