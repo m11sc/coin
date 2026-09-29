@@ -1,1 +1,42 @@
+name: crypto-signals
 
+on:
+  schedule:
+    - cron: "*/15 * * * *"   # каждые 15 минут (время UTC). Для приватного репозитория ставь "*/30 * * * *"
+  workflow_dispatch:          # кнопка ручного запуска во вкладке Actions
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      # Память о уже отправленных сигналах, чтобы не слать повторы
+      - uses: actions/cache/restore@v4
+        with:
+          path: signals_state.json
+          key: signals-state-${{ github.run_id }}
+          restore-keys: signals-state-
+
+      - name: Проверить сигналы
+        run: python crypto_signals.py
+        env:
+          RUN_ONCE: "1"
+          EXCHANGE: coinbase
+          SYMBOLS: ${{ vars.SYMBOLS }}      # необязательно, по умолчанию BTC-USD,ETH-USD,SOL-USD
+          INTERVAL: ${{ vars.INTERVAL }}    # необязательно, по умолчанию 1h
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+
+      - uses: actions/cache/save@v4
+        if: always()
+        with:
+          path: signals_state.json
+          key: signals-state-${{ github.run_id }}
