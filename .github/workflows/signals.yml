@@ -32,6 +32,9 @@ jobs:
           EXCHANGE: coinbase
           SYMBOLS: ${{ vars.SYMBOLS }}      # необязательно, по умолчанию BTC-USD,ETH-USD,SOL-USD
           INTERVAL: ${{ vars.INTERVAL }}    # необязательно, по умолчанию 1h
+          LEVERAGE: ${{ vars.LEVERAGE }}    # плечо, например 20 (по умолчанию 1 — спот)
+          DEPOSIT: ${{ vars.DEPOSIT }}      # необязательно: депозит в $, чтобы бот считал маржу
+          RISK_PCT: ${{ vars.RISK_PCT }}    # необязательно: % депозита на сделку, по умолчанию 1
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
 
