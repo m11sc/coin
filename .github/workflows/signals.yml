@@ -2,8 +2,13 @@ name: crypto-signals
 
 on:
   schedule:
-    - cron: "*/15 * * * *"   # каждые 15 минут (время UTC). Для приватного репозитория ставь "*/30 * * * *"
+    - cron: "*/5 * * * *"    # каждые 5 минут — минимум у GitHub. Для приватного репозитория ставь "*/30 * * * *"
   workflow_dispatch:          # кнопка ручного запуска во вкладке Actions
+
+# не запускать новую проверку, пока не закончилась предыдущая
+concurrency:
+  group: crypto-signals
+  cancel-in-progress: false
 
 jobs:
   check:
@@ -36,6 +41,7 @@ jobs:
           LEVERAGE: ${{ vars.LEVERAGE }}    # плечо, например 20 (по умолчанию 1 — спот)
           DEPOSIT: ${{ vars.DEPOSIT }}      # необязательно: депозит в $, чтобы бот считал маржу
           RISK_PCT: ${{ vars.RISK_PCT }}    # необязательно: % депозита на сделку, по умолчанию 1
+          ALLOW_SHORT: ${{ vars.ALLOW_SHORT }}  # 0 — только лонги, по умолчанию шорты включены
           TG_TOKEN: ${{ secrets.TG_TOKEN }}
           TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
 
