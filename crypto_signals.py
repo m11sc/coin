@@ -49,6 +49,9 @@ DEFAULT_SYMBOLS = {
 INTERVAL = os.getenv("INTERVAL") or "1h"             # binance: 1m,5m,15m,1h,4h,1d; coinbase: 1m,5m,15m,1h,6h,1d
 CHECK_EVERY = int(os.getenv("CHECK_EVERY") or 60)
 RUN_ONCE = os.getenv("RUN_ONCE") == "1"
+# SYMBOLS=ALL — все пары к доллару, у которых оборот за сутки не меньше MIN_VOLUME_USD
+MIN_VOLUME_USD = float(os.getenv("MIN_VOLUME_USD") or 5_000_000)
+STABLECOINS = {"USDT", "USDC", "DAI", "PYUSD", "FDUSD", "TUSD", "USDP", "GUSD", "EURC", "USDS", "USD1", "RLUSD"}
 
 EMA_FAST = 9
 EMA_SLOW = 21
@@ -128,6 +131,34 @@ def fetch_coinbase(symbol, interval, pages=2):
 
 
 FETCHERS = {"binance": fetch_binance, "coinbase": fetch_coinbase}
+
+
+def all_symbols():
+    """Все пары к доллару на бирже (без стейблкоинов). Для Binance сразу фильтр по обороту."""
+    if EXCHANGE == "coinbase":
+        r = requests.get("https://api.exchange.coinbase.com/products",
+                         headers={"User-Agent": "crypto-signals"}, timeout=15)
+        r.raise_for_status()
+        return sorted(
+            p["id"] for p in r.json()
+            if p.get("quote_currency") == "USD" and p.get("status") == "online"
+            and not p.get("trading_disabled") and p.get("base_currency") not in STABLECOINS
+        )
+    r = requests.get("https://api.binance.com/api/v3/ticker/24hr", timeout=15)
+    r.raise_for_status()
+    rows = [
+        t for t in r.json()
+        if t["symbol"].endswith("USDT") and t["symbol"][:-4] not in STABLECOINS
+        and float(t["quoteVolume"]) >= MIN_VOLUME_USD
+    ]
+    return [t["symbol"] for t in sorted(rows, key=lambda t: -float(t["quoteVolume"]))]
+
+
+def daily_volume_usd(candles):
+    """Примерный оборот за последние сутки в $ по свечам."""
+    step_ms = candles[-1]["time"] - candles[-2]["time"]
+    n = max(1, round(86_400_000 / step_ms))
+    return sum(c["close"] * c["volume"] for c in candles[-n:])
 
 
 # ---------- Индикаторы ----------
@@ -269,13 +300,14 @@ def save_state(state):
 
 
 # ---------- Логика стратегии ----------
-def check_symbol(symbol, state):
+def check_symbol(symbol, state, min_volume=0):
     candles = FETCHERS[EXCHANGE](symbol, INTERVAL)
     if len(candles) < EMA_SLOW + RSI_PERIOD + 2:
         raise ValueError(f"мало свечей ({len(candles)}), проверь название пары")
-
     key = f"{symbol}:{INTERVAL}"
     positions = state.setdefault("positions", {})
+    if min_volume and key not in positions and daily_volume_usd(candles) < min_volume:
+        return "skip"
     last_seen = state.setdefault("last_candle", {})
 
     a = analyze(candles)
@@ -389,16 +421,33 @@ def check_symbol(symbol, state):
         log.info("%s: сигналов нет", symbol)
 
 
-def run_check(symbols, state):
-    errors = 0
+def resolve_symbols():
+    raw = os.getenv("SYMBOLS") or DEFAULT_SYMBOLS[EXCHANGE]
+    if raw.strip().upper() == "ALL":
+        return all_symbols(), True
+    return [s.strip().upper() for s in raw.split(",") if s.strip()], False
+
+
+def run_check(state):
+    symbols, all_mode = resolve_symbols()
+    # у Coinbase объём в списке пар не отдаётся, поэтому фильтруем по свечам
+    min_volume = MIN_VOLUME_USD if all_mode and EXCHANGE == "coinbase" else 0
+    log.info("Биржа %s, пар к проверке: %d, таймфрейм %s, плечо x%g",
+             EXCHANGE, len(symbols), INTERVAL, LEVERAGE)
+    errors = skipped = 0
     for symbol in symbols:
         try:
-            check_symbol(symbol, state)
+            if check_symbol(symbol, state, min_volume) == "skip":
+                skipped += 1
         except Exception as e:
             errors += 1
             log.error("%s: ошибка — %s", symbol, e)
+        if all_mode:
+            time.sleep(0.2)  # не упираться в лимит запросов биржи
+    if skipped:
+        log.info("Пропущено мелких монет (оборот < %s$ в сутки): %d", f"{MIN_VOLUME_USD:,.0f}", skipped)
     save_state(state)
-    return errors
+    return errors, len(symbols)
 
 
 def main():
@@ -406,19 +455,19 @@ def main():
         sys.exit(f"Неизвестная биржа EXCHANGE={EXCHANGE}. Доступно: binance, coinbase")
     if EXCHANGE == "coinbase" and INTERVAL not in COINBASE_GRANULARITY:
         sys.exit(f"Coinbase не поддерживает таймфрейм {INTERVAL}. Доступно: {', '.join(COINBASE_GRANULARITY)}")
-
-    symbols = [s.strip().upper() for s in (os.getenv("SYMBOLS") or DEFAULT_SYMBOLS[EXCHANGE]).split(",") if s.strip()]
-    log.info("Биржа %s, слежу за %s, таймфрейм %s, плечо x%g", EXCHANGE, ", ".join(symbols), INTERVAL, LEVERAGE)
     if not (TG_TOKEN and TG_CHAT_ID):
         log.warning("TG_TOKEN / TG_CHAT_ID не заданы — сигналы будут в консоли")
 
     state = load_state()
     if RUN_ONCE:
-        errors = run_check(symbols, state)
-        sys.exit(1 if errors == len(symbols) else 0)
+        errors, total = run_check(state)
+        sys.exit(1 if total and errors == total else 0)  # красный запуск, если не удалось ни одной паре
 
     while True:
-        run_check(symbols, state)
+        try:
+            run_check(state)
+        except Exception as e:
+            log.error("Ошибка проверки: %s", e)
         time.sleep(CHECK_EVERY)
 
 
