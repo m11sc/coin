@@ -16,6 +16,11 @@
   Если сделки нет, а тренд вниз и появился сигнал разворота —
   придёт предупреждение «если держишь монету, подумай о выходе».
 
+Плечо (LEVERAGE, например 20):
+  - в сигнале: цена ликвидации, результат к марже на стопе и цели (с комиссиями)
+  - если задан DEPOSIT: сколько маржи ставить, чтобы стоп стоил RISK_PCT % депозита
+  - сигналы, где стоп слишком близко к ликвидации, пропускаются
+
 Режимы:
   - на своём компьютере: цикл, проверка каждые CHECK_EVERY секунд
   - в GitHub Actions (RUN_ONCE=1): одна проверка и выход
@@ -56,6 +61,14 @@ VOL_MULT = 2.5
 ATR_PERIOD = 14
 STOP_ATR = 1.5      # стоп-лосс = вход − STOP_ATR × ATR
 TAKE_ATR = 3.0      # цель      = вход + TAKE_ATR × ATR
+
+# Торговля с плечом (фьючерсы). LEVERAGE=1 — обычная покупка на споте.
+LEVERAGE = float(os.getenv("LEVERAGE") or 1)
+DEPOSIT = float(os.getenv("DEPOSIT") or 0)           # депозит в $, чтобы бот считал размер маржи (0 — не считать)
+RISK_PCT = float(os.getenv("RISK_PCT") or 1)         # сколько % депозита готов потерять, если сработает стоп
+FEE = 0.0005        # комиссия биржи за вход или выход (taker 0.05%), от объёма позиции
+MMR = 0.005         # поддерживающая маржа (0.5%) — нужна для расчёта цены ликвидации
+MAX_STOP_OF_LIQ = 0.7  # стоп должен быть не дальше 70% пути до ликвидации, иначе сигнал пропускаем
 
 TG_TOKEN = os.getenv("TG_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
@@ -219,6 +232,16 @@ def pct(a, b):
     return (b / a - 1) * 100
 
 
+def margin_result(entry, exit_price):
+    """Результат в % от маржи с учётом плеча и комиссий за вход и выход."""
+    return (pct(entry, exit_price) / 100 * LEVERAGE - 2 * FEE * LEVERAGE) * 100
+
+
+def liquidation_price(entry):
+    """Примерная цена ликвидации лонга при изолированной марже."""
+    return entry * (1 - 1 / LEVERAGE + MMR)
+
+
 def notify(text):
     if not (TG_TOKEN and TG_CHAT_ID):
         print("\n" + text + "\n")
@@ -288,11 +311,14 @@ def check_symbol(symbol, state):
 
         if reason:
             result = pct(pos["entry"], exit_price)
+            lev_line = ""
+            if LEVERAGE > 1:
+                lev_line = f"\nС плечом x{LEVERAGE:g}: {margin_result(pos['entry'], exit_price):+.1f}% к марже (с комиссиями)"
             notify(
                 f"🔴 {title} — <b>ПРОДАВАТЬ / закрыть сделку</b>\n\n"
                 f"Причина: {reason}\n"
                 f"Вход: {fmt(pos['entry'])} → выход: {fmt(exit_price)}\n"
-                f"Результат: {result:+.2f}%"
+                f"Цена: {result:+.2f}%" + lev_line
             )
             del positions[key]
             log.info("%s: выход (%s)", symbol, reason)
@@ -305,6 +331,30 @@ def check_symbol(symbol, state):
         entry = a["price"]
         stop = entry - STOP_ATR * a["atr"]
         target = entry + TAKE_ATR * a["atr"]
+
+        lev_block = ""
+        if LEVERAGE > 1:
+            liq = liquidation_price(entry)
+            if (entry - stop) > MAX_STOP_OF_LIQ * (entry - liq):
+                log.info("%s: сигнал пропущен — стоп %s слишком близко к ликвидации %s при x%g",
+                         symbol, fmt(stop), fmt(liq), LEVERAGE)
+                return
+            lev_block = (
+                f"\n<b>Плечо x{LEVERAGE:g}</b> (изолированная маржа)\n"
+                f"Ликвидация ≈ {fmt(liq)} ({pct(entry, liq):+.1f}%)\n"
+                f"На стопе: {margin_result(entry, stop):+.0f}% маржи · "
+                f"на цели: {margin_result(entry, target):+.0f}% маржи\n"
+            )
+            if DEPOSIT > 0:
+                loss_per_margin = -margin_result(entry, stop) / 100
+                margin = DEPOSIT * RISK_PCT / 100 / loss_per_margin
+                lev_block += (
+                    f"Маржа на сделку: ≈ {margin:,.0f}$ ({margin / DEPOSIT * 100:.1f}% депозита), "
+                    f"объём позиции ≈ {margin * LEVERAGE:,.0f}$ — "
+                    f"при стопе потеряешь {RISK_PCT:g}% депозита\n"
+                )
+            lev_block += "Поставь стоп-лосс и тейк-профит ордерами на бирже сразу после входа.\n"
+
         positions[key] = {"entry": entry, "stop": stop, "target": target, "time": a["time"]}
 
         why = [EVENT_TEXT[e] for e in sorted(buy_ev)]
@@ -317,7 +367,8 @@ def check_symbol(symbol, state):
             f"Вход: {fmt(entry)}\n"
             f"Стоп-лосс: {fmt(stop)} ({pct(entry, stop):+.1f}%)\n"
             f"Цель: {fmt(target)} ({pct(entry, target):+.1f}%)\n"
-            f"Риск/прибыль: 1:{TAKE_ATR / STOP_ATR:g} · RSI: {rsi_txt}\n\n"
+            f"Риск/прибыль: 1:{TAKE_ATR / STOP_ATR:g} · RSI: {rsi_txt}\n"
+            + lev_block + "\n"
             f"Почему: " + "; ".join(why) + "\n\n"
             "Когда выходить — пришлю отдельное сообщение (стоп, цель или разворот).\n"
             "Рискуй не больше 1–2% депозита на сделку. Это сигнал стратегии, не финансовый совет."
@@ -357,7 +408,7 @@ def main():
         sys.exit(f"Coinbase не поддерживает таймфрейм {INTERVAL}. Доступно: {', '.join(COINBASE_GRANULARITY)}")
 
     symbols = [s.strip().upper() for s in (os.getenv("SYMBOLS") or DEFAULT_SYMBOLS[EXCHANGE]).split(",") if s.strip()]
-    log.info("Биржа %s, слежу за %s, таймфрейм %s", EXCHANGE, ", ".join(symbols), INTERVAL)
+    log.info("Биржа %s, слежу за %s, таймфрейм %s, плечо x%g", EXCHANGE, ", ".join(symbols), INTERVAL, LEVERAGE)
     if not (TG_TOKEN and TG_CHAT_ID):
         log.warning("TG_TOKEN / TG_CHAT_ID не заданы — сигналы будут в консоли")
 
