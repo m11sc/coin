@@ -2,19 +2,17 @@
 """
 Торговые сигналы по криптовалюте с рекомендациями: когда покупать и когда выходить.
 
-Как работает стратегия (только по закрытым свечам):
-  ПОКУПКА, если:
+Как работает стратегия (сигналы — по закрытым свечам):
+  ЛОНГ (покупка), если цена выше EMA 200 (тренд вверх) и:
     - EMA 9 пересекла EMA 21 снизу вверх ИЛИ RSI вышел из перепроданности (<30)
-    - и цена выше EMA 200 (фильтр тренда: против тренда не покупаем)
-  Сразу считаются уровни по ATR (средний размах свечи):
-    - стоп-лосс = вход − 1.5 × ATR
-    - цель      = вход + 3 × ATR   (риск/прибыль 1:2)
+  ШОРТ (продажа), если цена ниже EMA 200 (тренд вниз) и:
+    - EMA 9 пересекла EMA 21 сверху вниз ИЛИ RSI вышел из перекупленности (>70)
+  Уровни по ATR (средний размах свечи):
+    - стоп-лосс на 1.5 × ATR против сделки, цель на 3 × ATR по сделке (риск/прибыль 1:2)
   ВЫХОД (бот сам следит за сделкой и пишет):
-    - цена дошла до стоп-лосса или до цели
-    - или разворот: EMA 9 пересекла EMA 21 вниз / RSI вышел из перекупленности (>70)
+    - стоп или цель — проверяются при каждом запуске по текущей цене, не дожидаясь закрытия свечи
+    - разворот (сигнал в обратную сторону) — по закрытой свече
   Всплеск объёма отмечается в сообщении как подтверждение.
-  Если сделки нет, а тренд вниз и появился сигнал разворота —
-  придёт предупреждение «если держишь монету, подумай о выходе».
 
 Плечо (LEVERAGE, например 20):
   - в сигнале: цена ликвидации, результат к марже на стопе и цели (с комиссиями)
@@ -72,6 +70,7 @@ RISK_PCT = float(os.getenv("RISK_PCT") or 1)         # сколько % депо
 FEE = 0.0005        # комиссия биржи за вход или выход (taker 0.05%), от объёма позиции
 MMR = 0.005         # поддерживающая маржа (0.5%) — нужна для расчёта цены ликвидации
 MAX_STOP_OF_LIQ = 0.7  # стоп должен быть не дальше 70% пути до ликвидации, иначе сигнал пропускаем
+ALLOW_SHORT = (os.getenv("ALLOW_SHORT") or "1") == "1"  # шорт-сигналы при тренде вниз (0 — только лонги)
 
 TG_TOKEN = os.getenv("TG_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
@@ -93,11 +92,10 @@ def fetch_binance(symbol, interval):
         timeout=10,
     )
     r.raise_for_status()
-    now_ms = time.time() * 1000
     return [
-        {"time": k[0], "high": float(k[2]), "low": float(k[3]),
+        {"time": k[0], "close_time": k[6], "high": float(k[2]), "low": float(k[3]),
          "close": float(k[4]), "volume": float(k[5])}
-        for k in r.json() if k[6] < now_ms  # только закрытые свечи
+        for k in r.json()
     ]
 
 
@@ -122,11 +120,10 @@ def fetch_coinbase(symbol, interval, pages=2):
         for k in r.json():  # [time, low, high, open, close, volume]
             rows[k[0]] = k
         end = start
-    now = time.time()
     return [
-        {"time": k[0] * 1000, "high": float(k[2]), "low": float(k[1]),
-         "close": float(k[4]), "volume": float(k[5])}
-        for t, k in sorted(rows.items()) if t + gran <= now  # только закрытые
+        {"time": k[0] * 1000, "close_time": (k[0] + gran) * 1000, "high": float(k[2]),
+         "low": float(k[1]), "close": float(k[4]), "volume": float(k[5])}
+        for t, k in sorted(rows.items())
     ]
 
 
@@ -263,14 +260,22 @@ def pct(a, b):
     return (b / a - 1) * 100
 
 
-def margin_result(entry, exit_price):
-    """Результат в % от маржи с учётом плеча и комиссий за вход и выход."""
-    return (pct(entry, exit_price) / 100 * LEVERAGE - 2 * FEE * LEVERAGE) * 100
+def margin_result(entry, exit_price, side="long"):
+    """Результат в % от маржи с учётом плеча, направления сделки и комиссий за вход и выход."""
+    move = pct(entry, exit_price) / 100
+    if side == "short":
+        move = -move
+    return (move * LEVERAGE - 2 * FEE * LEVERAGE) * 100
 
 
-def liquidation_price(entry):
-    """Примерная цена ликвидации лонга при изолированной марже."""
+def liquidation_price(entry, side="long"):
+    """Примерная цена ликвидации при изолированной марже."""
+    if side == "short":
+        return entry * (1 + 1 / LEVERAGE - MMR)
     return entry * (1 - 1 / LEVERAGE + MMR)
+
+
+SIDE_NAME = {"long": "ЛОНГ", "short": "ШОРТ"}
 
 
 def notify(text):
@@ -300,125 +305,169 @@ def save_state(state):
 
 
 # ---------- Логика стратегии ----------
+def close_message(title, pos, reason, exit_price):
+    side = pos.get("side", "long")
+    lev_line = ""
+    if LEVERAGE > 1:
+        lev_line = (f"\nС плечом x{LEVERAGE:g}: "
+                    f"{margin_result(pos['entry'], exit_price, side):+.1f}% к марже (с комиссиями)")
+    move = pct(pos["entry"], exit_price) * (-1 if side == "short" else 1)
+    icon = "✅" if move > 0 else "❌"
+    return (
+        f"{icon} {title} — <b>ЗАКРЫТЬ {SIDE_NAME[side]}</b>\n\n"
+        f"Причина: {reason}\n"
+        f"Вход: {fmt(pos['entry'])} → выход: {fmt(exit_price)}\n"
+        f"Результат по цене: {move:+.2f}%" + lev_line
+    )
+
+
+def check_levels(pos, candles_after_entry):
+    """Дошла ли цена до стопа или цели. Если за одну свечу задело оба — считаем стоп."""
+    side = pos.get("side", "long")
+    for c in candles_after_entry:
+        if side == "long":
+            if c["low"] <= pos["stop"]:
+                return "🛑 Сработал стоп-лосс", pos["stop"]
+            if c["high"] >= pos["target"]:
+                return "🎯 Цель достигнута", pos["target"]
+        else:
+            if c["high"] >= pos["stop"]:
+                return "🛑 Сработал стоп-лосс", pos["stop"]
+            if c["low"] <= pos["target"]:
+                return "🎯 Цель достигнута", pos["target"]
+    return None, None
+
+
+def open_message(title, side, entry, stop, target, a, events):
+    rsi_txt = f"{a['rsi']:.1f}" if a["rsi"] is not None else "—"
+    lev_block = ""
+    if LEVERAGE > 1:
+        liq = liquidation_price(entry, side)
+        lev_block = (
+            f"\n<b>Плечо x{LEVERAGE:g}</b> (изолированная маржа)\n"
+            f"Ликвидация ≈ {fmt(liq)} ({pct(entry, liq):+.1f}%)\n"
+            f"На стопе: {margin_result(entry, stop, side):+.0f}% маржи · "
+            f"на цели: {margin_result(entry, target, side):+.0f}% маржи\n"
+        )
+        if DEPOSIT > 0:
+            loss_per_margin = -margin_result(entry, stop, side) / 100
+            margin = DEPOSIT * RISK_PCT / 100 / loss_per_margin
+            lev_block += (
+                f"Маржа на сделку: ≈ {margin:,.0f}$ ({margin / DEPOSIT * 100:.1f}% депозита), "
+                f"объём позиции ≈ {margin * LEVERAGE:,.0f}$ — "
+                f"при стопе потеряешь {RISK_PCT:g}% депозита\n"
+            )
+        lev_block += "Поставь стоп-лосс и тейк-профит ордерами на бирже сразу после входа.\n"
+
+    why = [EVENT_TEXT[e] for e in sorted(events)]
+    if a["trend"] is not None:
+        why.append(f"цена {'выше' if side == 'long' else 'ниже'} EMA {TREND_EMA} — "
+                   f"тренд {'вверх' if side == 'long' else 'вниз'}")
+    if "VOLUME" in a["events"]:
+        why.append(f"объём x{a['vol_ratio']:.1f} к среднему — подтверждение")
+
+    head = ("🟢 {t} — <b>сигнал в ЛОНГ (покупка)</b>" if side == "long"
+            else "🔴 {t} — <b>сигнал в ШОРТ (продажа)</b>").format(t=title)
+    short_note = "Шорт открывается только на фьючерсах или марже.\n" if side == "short" else ""
+    return (
+        f"{head}\n\n"
+        f"Вход: {fmt(entry)}\n"
+        f"Стоп-лосс: {fmt(stop)} ({pct(entry, stop):+.1f}%)\n"
+        f"Цель: {fmt(target)} ({pct(entry, target):+.1f}%)\n"
+        f"Риск/прибыль: 1:{TAKE_ATR / STOP_ATR:g} · RSI: {rsi_txt}\n"
+        + lev_block + "\n"
+        "Почему: " + "; ".join(why) + "\n\n"
+        + short_note +
+        "Когда выходить — пришлю отдельное сообщение (стоп, цель или разворот).\n"
+        "Рискуй не больше 1–2% депозита на сделку. Это сигнал стратегии, не финансовый совет."
+    )
+
+
 def check_symbol(symbol, state, min_volume=0):
-    candles = FETCHERS[EXCHANGE](symbol, INTERVAL)
+    all_candles = FETCHERS[EXCHANGE](symbol, INTERVAL)
+    now_ms = time.time() * 1000
+    candles = [c for c in all_candles if c["close_time"] <= now_ms]     # закрытые свечи
+    live = [c for c in all_candles if c["close_time"] > now_ms][-1:]    # текущая, ещё не закрытая
     if len(candles) < EMA_SLOW + RSI_PERIOD + 2:
         raise ValueError(f"мало свечей ({len(candles)}), проверь название пары")
+
     key = f"{symbol}:{INTERVAL}"
     positions = state.setdefault("positions", {})
+    last_seen = state.setdefault("last_candle", {})
     if min_volume and key not in positions and daily_volume_usd(candles) < min_volume:
         return "skip"
-    last_seen = state.setdefault("last_candle", {})
+    title = f"<b>{symbol} · {INTERVAL}</b>"
 
+    # 1) Открытая сделка: стоп и цель проверяем при каждом запуске, включая текущую свечу
+    pos = positions.get(key)
+    if pos:
+        after = [c for c in candles + live if c["time"] > pos["time"]]
+        reason, exit_price = check_levels(pos, after)
+        if reason:
+            notify(close_message(title, pos, reason, exit_price))
+            del positions[key]
+            log.info("%s: выход (%s)", symbol, reason)
+            last_seen[key] = candles[-1]["time"]  # на этой же свече новую сделку не открываем
+            return
+
+    # 2) Сигналы — только по новой закрытой свече
     a = analyze(candles)
-    prev_time = last_seen.get(key)
-    if prev_time == a["time"]:
-        log.info("%s: новой свечи нет", symbol)
+    if last_seen.get(key) == a["time"]:
+        if pos:
+            log.info("%s: %s открыт, держим (цена %s, стоп %s, цель %s)", symbol,
+                     SIDE_NAME[pos.get("side", "long")], fmt((live or candles)[-1]["close"]),
+                     fmt(pos["stop"]), fmt(pos["target"]))
+        else:
+            log.info("%s: новой свечи нет", symbol)
         return
     last_seen[key] = a["time"]
 
-    title = f"<b>{symbol} · {INTERVAL}</b>"
-    rsi_txt = f"{a['rsi']:.1f}" if a["rsi"] is not None else "—"
     trend_up = a["trend"] is None or a["price"] > a["trend"]
-    buy_ev = a["events"] & {"EMA_UP", "RSI_UP"}
-    sell_ev = a["events"] & {"EMA_DOWN", "RSI_DOWN"}
+    trend_down = a["trend"] is not None and a["price"] < a["trend"]
+    up_ev = a["events"] & {"EMA_UP", "RSI_UP"}
+    down_ev = a["events"] & {"EMA_DOWN", "RSI_DOWN"}
 
-    pos = positions.get(key)
+    # Разворот против открытой сделки — выход
     if pos:
-        # Проверяем все свечи, закрывшиеся после входа и прошлой проверки
-        since = max(pos["time"], prev_time or 0)
-        reason, exit_price = None, None
-        for c in candles:
-            if c["time"] <= since:
-                continue
-            if c["low"] <= pos["stop"]:  # если за свечу задело и стоп, и цель — считаем стоп
-                reason, exit_price = "🛑 Сработал стоп-лосс", pos["stop"]
-                break
-            if c["high"] >= pos["target"]:
-                reason, exit_price = "🎯 Цель достигнута", pos["target"]
-                break
-        if not reason and sell_ev:
-            reason = "📉 Разворот: " + ", ".join(EVENT_TEXT[e] for e in sorted(sell_ev))
-            exit_price = a["price"]
-
-        if reason:
-            result = pct(pos["entry"], exit_price)
-            lev_line = ""
-            if LEVERAGE > 1:
-                lev_line = f"\nС плечом x{LEVERAGE:g}: {margin_result(pos['entry'], exit_price):+.1f}% к марже (с комиссиями)"
-            notify(
-                f"🔴 {title} — <b>ПРОДАВАТЬ / закрыть сделку</b>\n\n"
-                f"Причина: {reason}\n"
-                f"Вход: {fmt(pos['entry'])} → выход: {fmt(exit_price)}\n"
-                f"Цена: {result:+.2f}%" + lev_line
-            )
+        side = pos.get("side", "long")
+        against = down_ev if side == "long" else up_ev
+        if against:
+            reason = "↩️ Разворот: " + ", ".join(EVENT_TEXT[e] for e in sorted(against))
+            notify(close_message(title, pos, reason, a["price"]))
             del positions[key]
-            log.info("%s: выход (%s)", symbol, reason)
+            log.info("%s: выход по развороту", symbol)
         else:
-            log.info("%s: сделка открыта, держим (цена %s, стоп %s, цель %s)",
-                     symbol, fmt(a["price"]), fmt(pos["stop"]), fmt(pos["target"]))
+            log.info("%s: %s открыт, держим", symbol, SIDE_NAME[side])
         return
 
-    if buy_ev and trend_up and a["atr"]:
-        entry = a["price"]
-        stop = entry - STOP_ATR * a["atr"]
-        target = entry + TAKE_ATR * a["atr"]
+    # Новая сделка
+    side, events = None, None
+    if up_ev and trend_up:
+        side, events = "long", up_ev
+    elif down_ev and trend_down and ALLOW_SHORT:
+        side, events = "short", down_ev
 
-        lev_block = ""
-        if LEVERAGE > 1:
-            liq = liquidation_price(entry)
-            if (entry - stop) > MAX_STOP_OF_LIQ * (entry - liq):
-                log.info("%s: сигнал пропущен — стоп %s слишком близко к ликвидации %s при x%g",
-                         symbol, fmt(stop), fmt(liq), LEVERAGE)
-                return
-            lev_block = (
-                f"\n<b>Плечо x{LEVERAGE:g}</b> (изолированная маржа)\n"
-                f"Ликвидация ≈ {fmt(liq)} ({pct(entry, liq):+.1f}%)\n"
-                f"На стопе: {margin_result(entry, stop):+.0f}% маржи · "
-                f"на цели: {margin_result(entry, target):+.0f}% маржи\n"
-            )
-            if DEPOSIT > 0:
-                loss_per_margin = -margin_result(entry, stop) / 100
-                margin = DEPOSIT * RISK_PCT / 100 / loss_per_margin
-                lev_block += (
-                    f"Маржа на сделку: ≈ {margin:,.0f}$ ({margin / DEPOSIT * 100:.1f}% депозита), "
-                    f"объём позиции ≈ {margin * LEVERAGE:,.0f}$ — "
-                    f"при стопе потеряешь {RISK_PCT:g}% депозита\n"
-                )
-            lev_block += "Поставь стоп-лосс и тейк-профит ордерами на бирже сразу после входа.\n"
+    if not side or not a["atr"]:
+        if up_ev or down_ev:
+            log.info("%s: сигнал против тренда — пропущен", symbol)
+        else:
+            log.info("%s: сигналов нет", symbol)
+        return
 
-        positions[key] = {"entry": entry, "stop": stop, "target": target, "time": a["time"]}
+    entry = a["price"]
+    sign = 1 if side == "long" else -1
+    stop = entry - sign * STOP_ATR * a["atr"]
+    target = entry + sign * TAKE_ATR * a["atr"]
+    if LEVERAGE > 1:
+        liq = liquidation_price(entry, side)
+        if abs(entry - stop) > MAX_STOP_OF_LIQ * abs(entry - liq):
+            log.info("%s: %s пропущен — стоп %s слишком близко к ликвидации %s при x%g",
+                     symbol, SIDE_NAME[side], fmt(stop), fmt(liq), LEVERAGE)
+            return
 
-        why = [EVENT_TEXT[e] for e in sorted(buy_ev)]
-        if a["trend"] is not None:
-            why.append(f"цена выше EMA {TREND_EMA} — тренд вверх")
-        if "VOLUME" in a["events"]:
-            why.append(f"объём x{a['vol_ratio']:.1f} к среднему — подтверждение")
-        notify(
-            f"🟢 {title} — <b>сигнал на ПОКУПКУ</b>\n\n"
-            f"Вход: {fmt(entry)}\n"
-            f"Стоп-лосс: {fmt(stop)} ({pct(entry, stop):+.1f}%)\n"
-            f"Цель: {fmt(target)} ({pct(entry, target):+.1f}%)\n"
-            f"Риск/прибыль: 1:{TAKE_ATR / STOP_ATR:g} · RSI: {rsi_txt}\n"
-            + lev_block + "\n"
-            f"Почему: " + "; ".join(why) + "\n\n"
-            "Когда выходить — пришлю отдельное сообщение (стоп, цель или разворот).\n"
-            "Рискуй не больше 1–2% депозита на сделку. Это сигнал стратегии, не финансовый совет."
-        )
-        log.info("%s: покупка по %s", symbol, fmt(entry))
-    elif buy_ev:
-        log.info("%s: сигнал на покупку пропущен — цена ниже EMA %d (тренд вниз)", symbol, TREND_EMA)
-    elif sell_ev and not trend_up:
-        notify(
-            f"⚠️ {title} — <b>сигнал на продажу</b>\n\n"
-            + "; ".join(EVENT_TEXT[e] for e in sorted(sell_ev))
-            + f", цена ниже EMA {TREND_EMA} — тренд вниз.\n"
-            f"Цена: {fmt(a['price'])} · RSI: {rsi_txt}\n\n"
-            "Если держишь эту монету — стоит подумать о выходе. Покупать сейчас не стоит."
-        )
-        log.info("%s: предупреждение о продаже", symbol)
-    else:
-        log.info("%s: сигналов нет", symbol)
+    positions[key] = {"side": side, "entry": entry, "stop": stop, "target": target, "time": a["time"]}
+    notify(open_message(title, side, entry, stop, target, a, events))
+    log.info("%s: открыт %s по %s", symbol, SIDE_NAME[side], fmt(entry))
 
 
 def resolve_symbols():
