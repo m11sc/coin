@@ -1,0 +1,51 @@
+name: backtest
+
+# Запуск вручную: вкладка Actions → backtest → Run workflow.
+# Прогоняет стратегию по истории и обновляет вкладку «История» в Mini App.
+on:
+  workflow_dispatch:
+    inputs:
+      pages:
+        description: "Сколько страниц свечей (Coinbase: 300 свечей на страницу)"
+        default: "6"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crypto-signals   # не мешать основному боту коммитить статистику
+  cancel-in-progress: false
+
+jobs:
+  backtest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install requests
+
+      - name: Бэктест
+        run: python backtest.py
+        env:
+          BACKTEST_PAGES: ${{ inputs.pages }}
+          EXCHANGE: coinbase
+          SYMBOLS: ${{ vars.SYMBOLS }}
+          MIN_VOLUME_USD: ${{ vars.MIN_VOLUME_USD }}
+          INTERVAL: ${{ vars.INTERVAL }}
+          LEVERAGE: ${{ vars.LEVERAGE }}
+          ALLOW_SHORT: ${{ vars.ALLOW_SHORT }}
+
+      - name: Сохранить результат
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898732+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/backtest.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Бэктест стратегии"
+          git pull --rebase --autostash
+          git push
