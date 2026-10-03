@@ -10,13 +10,13 @@
    "time": 1791021600000
   },
   {
-   "symbol": "PUMP-USD",
+   "symbol": "BTC-USD",
    "interval": "1h",
    "side": "long",
-   "entry": 0.005302,
-   "stop": 0.004986023461983654,
-   "target": 0.005933953076032693,
-   "time": 1790974800000
+   "entry": 84990.97,
+   "stop": 84632.8250478869,
+   "target": 85707.25990422619,
+   "time": 1791046800000
   },
   {
    "symbol": "SOL-USD",
@@ -28,6 +28,15 @@
    "time": 1791036000000
   },
   {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 9.012,
+   "stop": 9.184681071192646,
+   "target": 8.66663785761471,
+   "time": 1791046800000
+  },
+  {
    "symbol": "ZRO-USD",
    "interval": "1h",
    "side": "long",
@@ -37,7 +46,22 @@
    "time": 1791021600000
   }
  ],
- "closed": [],
+ "closed": [
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.005302,
+   "exit": 0.005933953076032693,
+   "stop": 0.004986023461983654,
+   "target": 0.005933953076032693,
+   "open_time": 1790974800000,
+   "close_time": 1791052979565,
+   "result": "target",
+   "move_pct": 11.919,
+   "margin_pct": 118.19
+  }
+ ],
  "settings": {
   "exchange": "coinbase",
   "interval": "1h",
@@ -45,5 +69,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791040785198
+ "updated": 1791053023562
 }
