@@ -10,6 +10,10 @@ concurrency:
   group: crypto-signals
   cancel-in-progress: false
 
+# нужно, чтобы бот мог сохранять статистику сделок (docs/data/trades.json) в репозиторий
+permissions:
+  contents: write
+
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -50,3 +54,15 @@ jobs:
         with:
           path: signals_state.json
           key: signals-state-${{ github.run_id }}
+
+      # Коммит только когда сделка открылась или закрылась — файл меняется не каждый запуск
+      - name: Сохранить статистику
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898732+github-actions[bot]@users.noreply.github.com"
+          git add docs/data/trades.json 2>/dev/null || exit 0
+          git diff --cached --quiet && exit 0
+          git commit -m "Статистика сделок"
+          git pull --rebase --autostash
+          git push
