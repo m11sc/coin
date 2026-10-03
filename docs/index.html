@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Статистика сигналов</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+/* Mini App: single column, Telegram-native. Colors come from Telegram theme params when opened in Telegram,
+   otherwise from the fallbacks below (light / dark by system setting). */
+:root{
+  --bg: var(--tg-theme-secondary-bg-color, #f1f2f6);
+  --card: var(--tg-theme-bg-color, #ffffff);
+  --text: var(--tg-theme-text-color, #15171c);
+  --hint: var(--tg-theme-hint-color, #8a8f9c);
+  --accent: var(--tg-theme-button-color, #2f7cf6);
+  --accent-text: var(--tg-theme-button-text-color, #ffffff);
+  --line: rgba(138,143,156,.22);
+  --up: #1f9d61;
+  --down: #e0473c;
+  --up-bg: rgba(31,157,97,.14);
+  --down-bg: rgba(224,71,60,.14);
+  --mono: ui-monospace, "SF Mono", "Roboto Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not(.tg){
+    --bg:#0f1115; --card:#1a1d24; --text:#eceef3; --hint:#8b91a0; --accent:#5b9bff; color-scheme:dark;
+  }
+}
+:root.tg-dark{ --up:#3fcf8a; --down:#ff6b5e; color-scheme:dark }
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font:15px/1.4 -apple-system, system-ui, "Segoe UI", Roboto, sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:560px;margin:0 auto;padding:12px 12px calc(24px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:12px}
+.num{font-variant-numeric:tabular-nums}
+.up{color:var(--up)} .down{color:var(--down)} .hint{color:var(--hint)}
+
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:8px;padding:4px 4px 0}
+h1{font-size:22px;margin:0;letter-spacing:-.01em}
+.meta{font:12px var(--mono);color:var(--hint);text-align:right}
+
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--line);border-radius:10px;padding:2px;gap:2px}
+.seg button{all:unset;white-space:nowrap;text-align:center;padding:7px 4px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;color:var(--text)}
+.seg button[aria-pressed="true"]{background:var(--card);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.seg button:focus-visible{outline:2px solid var(--accent)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.row .seg{flex:1 1 150px}
+
+.card{background:var(--card);border-radius:14px;padding:14px}
+.card h2{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--hint);margin:0 0 10px;display:flex;justify-content:space-between;gap:8px}
+.card h2 span{text-transform:none;letter-spacing:0;font-weight:400}
+
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 12px}
+.kpi b{display:block;font-size:24px;font-weight:650;letter-spacing:-.01em}
+.kpi > span{font-size:12px;color:var(--hint)}
+.split{display:flex;height:8px;border-radius:4px;overflow:hidden;margin-top:14px;background:var(--line)}
+.split i{display:block;height:100%}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--hint);margin-top:6px}
+.legend em{font-style:normal;color:var(--text)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px;vertical-align:1px}
+
+#chart{width:100%;height:170px;display:block}
+.chart-empty{height:170px;display:grid;place-items:center;color:var(--hint);font-size:14px}
+
+.list{display:flex;flex-direction:column}
+.item{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:10px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0;padding-top:0}
+.item .sym{font-weight:600;display:flex;align-items:center;gap:6px;min-width:0}
+.item .res{font-weight:600;text-align:right}
+.item .sub{font-size:12px;color:var(--hint)}
+.pill{font-size:11px;font-weight:600;padding:1px 6px;border-radius:5px}
+.pill.long{background:var(--up-bg);color:var(--up)} .pill.short{background:var(--down-bg);color:var(--down)}
+
+.track{grid-column:1/-1;position:relative;height:6px;border-radius:3px;margin:8px 0 2px;
+  background:linear-gradient(90deg,var(--down-bg),var(--line) 50%,var(--up-bg))}
+.track .entry{position:absolute;top:-3px;width:2px;height:12px;background:var(--hint);border-radius:1px}
+.track .now{position:absolute;top:-4px;width:14px;height:14px;margin-left:-7px;border-radius:50%;background:var(--accent);border:2px solid var(--card)}
+.ends{grid-column:1/-1;display:flex;justify-content:space-between;font:11px var(--mono);color:var(--hint)}
+
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{font-size:12px;font-weight:500;color:var(--hint);text-align:right;padding:0 0 6px}
+th:first-child,td:first-child{text-align:left}
+td{padding:7px 0;border-top:1px solid var(--line);text-align:right}
+td:first-child{font-weight:600}
+.more{all:unset;display:block;margin-top:8px;color:var(--accent);font-size:14px;cursor:pointer}
+.empty{color:var(--hint);font-size:14px;padding:6px 0}
+footer{font-size:12px;color:var(--hint);text-align:center;padding:4px 12px;line-height:1.5}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Сигналы</h1>
+    <div class="meta" id="meta">загрузка…</div>
+  </header>
+
+  <div class="seg" role="group" aria-label="Источник">
+    <button id="src-live" aria-pressed="true">Живые сделки</button>
+    <button id="src-bt" aria-pressed="false">История (бэктест)</button>
+  </div>
+
+  <div class="row">
+    <div class="seg" role="group" aria-label="Период">
+      <button data-period="7" aria-pressed="false">7 дн</button>
+      <button data-period="30" aria-pressed="false">30 дн</button>
+      <button data-period="0" aria-pressed="true">Всё</button>
+    </div>
+    <div class="seg" role="group" aria-label="Расчёт" id="mode-seg">
+      <button data-mode="move" aria-pressed="false">Цена</button>
+      <button data-mode="margin" aria-pressed="true" id="mode-margin">Маржа</button>
+    </div>
+  </div>
+
+  <section class="card">
+    <h2>Итоги <span id="period-label"></span></h2>
+    <div class="kpis">
+      <div class="kpi"><b class="num" id="k-count">—</b><span>сделок</span></div>
+      <div class="kpi"><b class="num" id="k-win">—</b><span>прибыльных</span></div>
+      <div class="kpi"><b class="num" id="k-avg">—</b><span>средний результат</span></div>
+      <div class="kpi"><b class="num" id="k-sum">—</b><span>сумма результатов</span></div>
+    </div>
+    <div class="split" id="split"></div>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <section class="card">
+    <h2>Накопленный результат <span id="chart-label"></span></h2>
+    <div id="chart-box"></div>
+  </section>
+
+  <section class="card" id="open-card">
+    <h2>Открытые сделки <span id="open-count"></span></h2>
+    <div class="list" id="open-list"></div>
+  </section>
+
+  <section class="card">
+    <h2>По монетам</h2>
+    <div id="coins"></div>
+  </section>
+
+  <section class="card">
+    <h2>Последние сделки</h2>
+    <div class="list" id="history"></div>
+  </section>
+
+  <footer>Сигналы механической стратегии (EMA, RSI, ATR). Это не финансовый совет.<br><span id="updated"></span></footer>
+</div>
+
+<script>
+const tg = window.Telegram && Telegram.WebApp;
+if (tg && tg.initData !== undefined && tg.platform !== "unknown") {
+  document.documentElement.classList.add("tg");
+  if (tg.colorScheme === "dark") document.documentElement.classList.add("tg-dark");
+  tg.ready(); tg.expand();
+  try { tg.setHeaderColor("secondary_bg_color"); tg.setBackgroundColor("secondary_bg_color"); } catch (e) {}
+}
+const haptic = () => { try { tg && tg.HapticFeedback.selectionChanged(); } catch (e) {} };
+
+const S = { src: "live", period: 0, mode: "margin", data: { live: null, bt: null }, showAllCoins: false, prices: {} };
+const $ = id => document.getElementById(id);
+const REASON = { target: ["🎯", "цель"], stop: ["🛑", "стоп"], reverse: ["↩️", "разворот"], other: ["•", "выход"] };
+const REASON_COLOR = { target: "var(--up)", stop: "var(--down)", reverse: "var(--hint)", other: "var(--hint)" };
+
+const fmtPrice = x => Number(x).toPrecision(6).replace(/\.?0+$/, "").replace(/\.?0+e/, "e");
+const fmtPct = (x, d = 1) => (x > 0 ? "+" : x < 0 ? "−" : "") + Math.abs(x).toFixed(d) + "%";
+const cls = x => x > 0 ? "up" : x < 0 ? "down" : "";
+const dt = ms => new Date(ms).toLocaleString("ru-RU", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+const day = ms => new Date(ms).toLocaleDateString("ru-RU", { day: "numeric", month: "short" });
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+async function load(name) {
+  try {
+    const r = await fetch(`data/${name}.json?t=${Date.now()}`, { cache: "no-store" });
+    if (!r.ok) return null;
+    return await r.json();
+  } catch (e) { return null; }
+}
+
+function current() { return S.data[S.src] || { open: [], closed: [], settings: {} }; }
+function lev() { return (current().settings || {}).leverage || 1; }
+function val(t) { return S.mode === "margin" && lev() > 1 ? t.margin_pct : t.move_pct; }
+
+function filtered() {
+  const d = current(); let closed = d.closed || [];
+  if (S.period) {
+    const end = S.src === "bt" && d.to ? d.to : Date.now();
+    closed = closed.filter(t => t.close_time >= end - S.period * 864e5);
+  }
+  return closed;
+}
+
+function renderMeta() {
+  const s = current().settings || {};
+  $("meta").innerHTML = s.exchange
+    ? `${esc(s.exchange)} · ${esc(s.interval)}${s.leverage > 1 ? " · x" + s.leverage : ""}<br>стоп ${s.stop_atr}×ATR · цель ${s.take_atr}×ATR`
+    : "";
+  const marginOk = lev() > 1;
+  $("mode-seg").hidden = !marginOk;
+  $("mode-margin").textContent = marginOk ? `Маржа x${lev()}` : "Маржа";
+  const d = current();
+  $("updated").textContent = d.updated ? "Обновлено " + dt(d.updated) : "";
+  $("period-label").textContent = S.src === "bt" && d.from ? `${day(d.from)} — ${day(d.to)}` : "";
+  $("chart-label").textContent = S.mode === "margin" && marginOk ? `% маржи` : `% цены`;
+}
+
+function renderKpis(closed) {
+  const n = closed.length, vals = closed.map(val);
+  const wins = vals.filter(v => v > 0).length, sum = vals.reduce((a, b) => a + b, 0);
+  $("k-count").textContent = n;
+  $("k-win").textContent = n ? Math.round(wins / n * 100) + "%" : "—";
+  $("k-avg").innerHTML = n ? `<span class="${cls(sum / n)}">${fmtPct(sum / n, 2)}</span>` : "—";
+  $("k-sum").innerHTML = n ? `<span class="${cls(sum)}">${fmtPct(sum)}</span>` : "—";
+  const by = { target: 0, stop: 0, reverse: 0, other: 0 };
+  closed.forEach(t => by[t.result in by ? t.result : "other"]++);
+  $("split").innerHTML = n ? Object.entries(by).filter(([, c]) => c)
+    .map(([k, c]) => `<i style="width:${c / n * 100}%;background:${REASON_COLOR[k]}" title="${REASON[k][1]}: ${c}"></i>`).join("") : "";
+  $("legend").innerHTML = n ? Object.entries(by).filter(([, c]) => c)
+    .map(([k, c]) => `<span><span class="dot" style="background:${REASON_COLOR[k]}"></span>${REASON[k][1]} <em class="num">${c}</em></span>`).join("") : "";
+}
+
+function renderChart(closed) {
+  const box = $("chart-box");
+  if (closed.length < 2) { box.innerHTML = `<div class="chart-empty">${closed.length ? "Нужно хотя бы 2 сделки для графика" : "Пока нет закрытых сделок"}</div>`; return; }
+  const pts = []; let acc = 0;
+  closed.slice().sort((a, b) => a.close_time - b.close_time).forEach(t => { acc += val(t); pts.push([t.close_time, acc]); });
+  const W = Math.max(280, box.clientWidth || 520), H = 170, L = 54, R = 8, T = 10, B = 22;
+  const xs = pts.map(p => p[0]), ys = pts.map(p => p[1]).concat(0);
+  const x0 = Math.min(...xs), x1 = Math.max(...xs) || x0 + 1;
+  let y0 = Math.min(...ys), y1 = Math.max(...ys); if (y0 === y1) { y0 -= 1; y1 += 1; }
+  const pad = (y1 - y0) * .08; y0 -= pad; y1 += pad;
+  const X = x => L + (x - x0) / (x1 - x0 || 1) * (W - L - R), Y = y => T + (y1 - y) / (y1 - y0) * (H - T - B);
+  const step = niceStep((y1 - y0) / 4), ticks = [];
+  for (let v = Math.ceil(y0 / step) * step; v <= y1; v += step) ticks.push(+v.toFixed(6));
+  const line = pts.map((p, i) => (i ? "L" : "M") + X(p[0]).toFixed(1) + " " + Y(p[1]).toFixed(1)).join(" ");
+  const last = pts[pts.length - 1], color = last[1] >= 0 ? "var(--up)" : "var(--down)";
+  const area = `M${X(pts[0][0]).toFixed(1)} ${Y(0).toFixed(1)} ` + line.replace(/^M/, "L") + ` L${X(last[0]).toFixed(1)} ${Y(0).toFixed(1)} Z`;
+  box.innerHTML = `<svg id="chart" viewBox="0 0 ${W} ${H}" role="img" aria-label="Накопленный результат ${fmtPct(last[1])}">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${color}" stop-opacity=".22"/><stop offset="1" stop-color="${color}" stop-opacity="0"/></linearGradient></defs>
+    ${ticks.map(v => `<line x1="${L}" x2="${W - R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--line)" stroke-width="${v === 0 ? 1.5 : 1}" vector-effect="non-scaling-stroke"/>
+      <text x="${L - 6}" y="${Y(v) + 4}" text-anchor="end" font-size="11" fill="var(--hint)" class="num">${v > 0 ? "+" : ""}${v}%</text>`).join("")}
+    <path d="${area}" fill="url(#g)"/>
+    <path d="${line}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>
+    <circle cx="${X(last[0])}" cy="${Y(last[1])}" r="3.5" fill="${color}"/>
+    <text x="${L}" y="${H - 4}" font-size="11" fill="var(--hint)">${day(x0)}</text>
+    <text x="${W - R}" y="${H - 4}" font-size="11" fill="var(--hint)" text-anchor="end">${day(x1)}</text>
+  </svg>`;
+}
+function niceStep(raw) { const p = Math.pow(10, Math.floor(Math.log10(raw))); const m = raw / p; return (m <= 1 ? 1 : m <= 2 ? 2 : m <= 5 ? 5 : 10) * p; }
+
+function renderOpen() {
+  const card = $("open-card"), open = current().open || [];
+  card.hidden = S.src !== "live";
+  $("open-count").textContent = open.length || "";
+  if (!open.length) { $("open-list").innerHTML = `<div class="empty">Сейчас открытых сделок нет — бот пришлёт сигнал, когда появится вход.</div>`; return; }
+  $("open-list").innerHTML = open.map(p => {
+    const now = S.prices[p.symbol];
+    let res = "", marker = "";
+    if (now) {
+      const sign = p.side === "short" ? -1 : 1;
+      const move = (now / p.entry - 1) * 100 * sign;
+      const shown = S.mode === "margin" && lev() > 1 ? (move / 100 * lev() - 2 * 0.0005 * lev()) * 100 : move;
+      res = `<span class="${cls(shown)}">${fmtPct(shown, 2)}</span>`;
+      const lo = Math.min(p.stop, p.target), hi = Math.max(p.stop, p.target);
+      let pos = (now - lo) / (hi - lo); if (p.side === "short") pos = 1 - pos;
+      marker = `<i class="now" style="left:${Math.max(0, Math.min(1, pos)) * 100}%"></i>`;
+    }
+    const lo = Math.min(p.stop, p.target), hi = Math.max(p.stop, p.target);
+    let ePos = (p.entry - lo) / (hi - lo); if (p.side === "short") ePos = 1 - ePos;
+    return `<div class="item">
+      <div class="sym">${esc(p.symbol)} <span class="pill ${p.side}">${p.side === "long" ? "ЛОНГ" : "ШОРТ"}</span></div>
+      <div class="res num">${res || '<span class="hint">—</span>'}</div>
+      <div class="sub num">вход ${fmtPrice(p.entry)}${now ? " · сейчас " + fmtPrice(now) : ""}</div>
+      <div class="sub">${dt(p.time)}</div>
+      <div class="track"><i class="entry" style="left:${ePos * 100}%"></i>${marker}</div>
+      <div class="ends"><span>🛑 ${fmtPrice(p.stop)}</span><span>🎯 ${fmtPrice(p.target)}</span></div>
+    </div>`;
+  }).join("");
+}
+
+function renderCoins(closed) {
+  const m = {};
+  closed.forEach(t => { const c = m[t.symbol] ||= { n: 0, w: 0, s: 0 }; c.n++; c.s += val(t); if (val(t) > 0) c.w++; });
+  const rows = Object.entries(m).sort((a, b) => b[1].s - a[1].s);
+  if (!rows.length) { $("coins").innerHTML = `<div class="empty">Нет данных за этот период.</div>`; return; }
+  const shown = S.showAllCoins ? rows : rows.slice(0, 8);
+  $("coins").innerHTML = `<table><thead><tr><th>Монета</th><th>Сделок</th><th>Прибыльных</th><th>Итог</th></tr></thead><tbody>${
+    shown.map(([s, c]) => `<tr><td>${esc(s)}</td><td class="num">${c.n}</td><td class="num">${Math.round(c.w / c.n * 100)}%</td><td class="num ${cls(c.s)}">${fmtPct(c.s)}</td></tr>`).join("")
+  }</tbody></table>${rows.length > 8 ? `<button class="more" id="more-coins">${S.showAllCoins ? "Свернуть" : "Показать все " + rows.length}</button>` : ""}`;
+  const b = $("more-coins"); if (b) b.onclick = () => { S.showAllCoins = !S.showAllCoins; haptic(); renderCoins(filtered()); };
+}
+
+function renderHistory(closed) {
+  const last = closed.slice().sort((a, b) => b.close_time - a.close_time).slice(0, 30);
+  if (!last.length) { $("history").innerHTML = `<div class="empty">${S.src === "live" ? "Закрытых сделок пока нет. Загляните во вкладку «История» — там результат стратегии на прошлых данных." : "Нет сделок за этот период."}</div>`; return; }
+  $("history").innerHTML = last.map(t => {
+    const v = val(t), r = REASON[t.result] || REASON.other;
+    return `<div class="item">
+      <div class="sym">${esc(t.symbol)} <span class="pill ${t.side}">${t.side === "long" ? "ЛОНГ" : "ШОРТ"}</span></div>
+      <div class="res num ${cls(v)}">${fmtPct(v, 2)}</div>
+      <div class="sub num">${fmtPrice(t.entry)} → ${fmtPrice(t.exit)} · ${r[0]} ${r[1]}</div>
+      <div class="sub">${dt(t.close_time)}</div>
+    </div>`;
+  }).join("");
+}
+
+function render() {
+  const closed = filtered();
+  renderMeta(); renderKpis(closed); renderChart(closed); renderOpen(); renderCoins(closed); renderHistory(closed);
+}
+
+async function loadPrices() {
+  const d = S.data.live; if (!d || !d.open || !d.open.length) return;
+  const ex = (d.settings || {}).exchange || "coinbase";
+  await Promise.all(d.open.map(async p => {
+    try {
+      const url = ex === "binance"
+        ? `https://api.binance.com/api/v3/ticker/price?symbol=${encodeURIComponent(p.symbol)}`
+        : `https://api.exchange.coinbase.com/products/${encodeURIComponent(p.symbol)}/ticker`;
+      const j = await (await fetch(url)).json();
+      const price = parseFloat(j.price); if (price > 0) S.prices[p.symbol] = price;
+    } catch (e) { /* цена не обязательна: без неё карточка покажет вход, стоп и цель */ }
+  }));
+  if (S.src === "live") renderOpen();
+}
+
+function bindSeg(selector, attr, key, parse = v => v) {
+  document.querySelectorAll(selector).forEach(b => b.addEventListener("click", () => {
+    document.querySelectorAll(selector).forEach(x => x.setAttribute("aria-pressed", x === b));
+    S[key] = parse(b.dataset[attr]); haptic(); render();
+  }));
+}
+bindSeg("[data-period]", "period", "period", Number);
+bindSeg("[data-mode]", "mode", "mode");
+function setSrc(src) {
+  S.src = src; S.showAllCoins = false;
+  $("src-live").setAttribute("aria-pressed", src === "live"); $("src-bt").setAttribute("aria-pressed", src === "bt");
+  render();
+}
+$("src-live").onclick = () => { haptic(); setSrc("live"); };
+$("src-bt").onclick = () => { haptic(); setSrc("bt"); };
+
+addEventListener("resize", () => renderChart(filtered()));
+
+(async () => {
+  const [live, bt] = await Promise.all([load("trades"), load("backtest")]);
+  S.data.live = live; S.data.bt = bt;
+  $("src-bt").hidden = !bt;
+  // если живых закрытых сделок ещё нет, а бэктест есть — сразу показываем его
+  const liveEmpty = !live || (!(live.closed || []).length && !(live.open || []).length);
+  setSrc(liveEmpty && bt ? "bt" : "live");
+  if (!live && !bt) $("meta").textContent = "нет данных";
+  loadPrices();
+})();
+</script>
+</body>
+</html>

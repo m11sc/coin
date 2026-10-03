@@ -76,6 +76,9 @@ TG_TOKEN = os.getenv("TG_TOKEN", "")
 TG_CHAT_ID = os.getenv("TG_CHAT_ID", "")
 
 STATE_FILE = Path(__file__).with_name("signals_state.json")
+# История сделок для статистики (Mini App в Telegram читает этот файл с GitHub Pages)
+TRADES_FILE = Path(os.getenv("TRADES_FILE") or Path(__file__).parent / "docs" / "data" / "trades.json")
+MAX_CLOSED = 2000   # сколько закрытых сделок хранить в истории
 # --------------------------------
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
@@ -208,17 +211,27 @@ def atr(highs, lows, closes, period=14):
     return out
 
 
-def analyze(candles):
-    """Индикаторы и события на последней закрытой свече."""
+def indicators(candles):
+    """Все индикаторы сразу для всего списка свечей (значение на свече i зависит только от свечей до i)."""
     closes = [c["close"] for c in candles]
     highs = [c["high"] for c in candles]
     lows = [c["low"] for c in candles]
-    vols = [c["volume"] for c in candles]
-    i = len(closes) - 1
+    return {
+        "closes": closes,
+        "vols": [c["volume"] for c in candles],
+        "ef": ema(closes, EMA_FAST), "es": ema(closes, EMA_SLOW), "et": ema(closes, TREND_EMA),
+        "rsi": rsi(closes, RSI_PERIOD), "atr": atr(highs, lows, closes, ATR_PERIOD),
+    }
 
-    ef, es, et = ema(closes, EMA_FAST), ema(closes, EMA_SLOW), ema(closes, TREND_EMA)
-    r = rsi(closes, RSI_PERIOD)
-    a = atr(highs, lows, closes, ATR_PERIOD)
+
+def analyze(candles, i=None, ind=None):
+    """Индикаторы и события на свече i (по умолчанию — последняя закрытая).
+    ind можно посчитать заранее через indicators() — так делает бэктест."""
+    ind = ind or indicators(candles)
+    closes, vols = ind["closes"], ind["vols"]
+    i = len(closes) - 1 if i is None else i
+
+    ef, es, et, r, a = ind["ef"], ind["es"], ind["et"], ind["rsi"], ind["atr"]
 
     events = set()
     if None not in (ef[i - 1], es[i - 1], ef[i], es[i]):
@@ -304,6 +317,70 @@ def save_state(state):
     STATE_FILE.write_text(json.dumps(state))
 
 
+# ---------- История сделок (для статистики) ----------
+REASON_CODE = {"🛑": "stop", "🎯": "target", "↩️": "reverse"}
+
+
+def trade_record(key, pos, exit_price, reason, close_time):
+    """Одна закрытая сделка в том виде, в каком её показывает Mini App."""
+    symbol, interval = key.split(":")
+    side = pos.get("side", "long")
+    move = pct(pos["entry"], exit_price) * (-1 if side == "short" else 1)
+    return {
+        "symbol": symbol, "interval": interval, "side": side,
+        "entry": pos["entry"], "exit": exit_price, "stop": pos["stop"], "target": pos["target"],
+        "open_time": pos["time"], "close_time": int(close_time),
+        "result": next((code for icon, code in REASON_CODE.items() if reason.startswith(icon)), "other"),
+        "move_pct": round(move, 3),
+        "margin_pct": round(margin_result(pos["entry"], exit_price, side), 2),
+    }
+
+
+def settings_info():
+    return {"exchange": EXCHANGE, "interval": INTERVAL, "leverage": LEVERAGE,
+            "stop_atr": STOP_ATR, "take_atr": TAKE_ATR}
+
+
+def load_trades():
+    try:
+        data = json.loads(TRADES_FILE.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        data = {}
+    data.setdefault("open", [])
+    data.setdefault("closed", [])
+    return data
+
+
+def save_trades(trades, state):
+    """Пишем файл, только если что-то поменялось — иначе в репозитории будет коммит каждые 5 минут."""
+    trades["open"] = [
+        {"symbol": k.split(":")[0], "interval": k.split(":")[1], **p}
+        for k, p in sorted(state.get("positions", {}).items())
+    ]
+    trades["closed"] = trades["closed"][-MAX_CLOSED:]
+    trades["settings"] = settings_info()
+    old = load_trades()
+    old.pop("updated", None)
+    if old == {k: v for k, v in trades.items() if k != "updated"} and TRADES_FILE.exists():
+        return
+    trades["updated"] = int(time.time() * 1000)
+    TRADES_FILE.parent.mkdir(parents=True, exist_ok=True)
+    TRADES_FILE.write_text(json.dumps(trades, ensure_ascii=False, indent=1))
+    log.info("Статистика обновлена: открыто %d, закрыто всего %d", len(trades["open"]), len(trades["closed"]))
+
+
+def restore_positions(state, trades):
+    """Если кэш GitHub Actions потерялся, берём открытые сделки из файла статистики."""
+    positions = state.setdefault("positions", {})
+    if positions or not trades["open"]:
+        return
+    for p in trades["open"]:
+        p = dict(p)
+        key = f"{p.pop('symbol')}:{p.pop('interval')}"
+        positions[key] = p
+    log.info("Открытые сделки восстановлены из файла статистики: %d", len(positions))
+
+
 # ---------- Логика стратегии ----------
 def close_message(title, pos, reason, exit_price):
     side = pos.get("side", "long")
@@ -383,7 +460,44 @@ def open_message(title, side, entry, stop, target, a, events):
     )
 
 
-def check_symbol(symbol, state, min_volume=0):
+def _directional_events(a):
+    return a["events"] & {"EMA_UP", "RSI_UP"}, a["events"] & {"EMA_DOWN", "RSI_DOWN"}
+
+
+def reversal_events(pos, a):
+    """События на свече, которые идут против открытой сделки (повод выйти)."""
+    up_ev, down_ev = _directional_events(a)
+    return down_ev if pos.get("side", "long") == "long" else up_ev
+
+
+def entry_signal(a):
+    """Решение о входе по свече. Возвращает (сигнал, None) или (None, почему нет).
+    Одна функция и для бота, и для бэктеста — чтобы статистика считалась по той же логике."""
+    trend_up = a["trend"] is None or a["price"] > a["trend"]
+    trend_down = a["trend"] is not None and a["price"] < a["trend"]
+    up_ev, down_ev = _directional_events(a)
+
+    side, events = None, None
+    if up_ev and trend_up:
+        side, events = "long", up_ev
+    elif down_ev and trend_down and ALLOW_SHORT:
+        side, events = "short", down_ev
+    if not side or not a["atr"]:
+        return None, ("сигнал против тренда — пропущен" if (up_ev or down_ev) else "сигналов нет")
+
+    entry = a["price"]
+    sign = 1 if side == "long" else -1
+    stop = entry - sign * STOP_ATR * a["atr"]
+    target = entry + sign * TAKE_ATR * a["atr"]
+    if LEVERAGE > 1:
+        liq = liquidation_price(entry, side)
+        if abs(entry - stop) > MAX_STOP_OF_LIQ * abs(entry - liq):
+            return None, (f"{SIDE_NAME[side]} пропущен — стоп {fmt(stop)} слишком близко "
+                          f"к ликвидации {fmt(liq)} при x{LEVERAGE:g}")
+    return {"side": side, "events": events, "entry": entry, "stop": stop, "target": target}, None
+
+
+def check_symbol(symbol, state, min_volume=0, trades=None):
     all_candles = FETCHERS[EXCHANGE](symbol, INTERVAL)
     now_ms = time.time() * 1000
     candles = [c for c in all_candles if c["close_time"] <= now_ms]     # закрытые свечи
@@ -405,6 +519,8 @@ def check_symbol(symbol, state, min_volume=0):
         reason, exit_price = check_levels(pos, after)
         if reason:
             notify(close_message(title, pos, reason, exit_price))
+            if trades is not None:
+                trades["closed"].append(trade_record(key, pos, exit_price, reason, now_ms))
             del positions[key]
             log.info("%s: выход (%s)", symbol, reason)
             last_seen[key] = candles[-1]["time"]  # на этой же свече новую сделку не открываем
@@ -422,18 +538,15 @@ def check_symbol(symbol, state, min_volume=0):
         return
     last_seen[key] = a["time"]
 
-    trend_up = a["trend"] is None or a["price"] > a["trend"]
-    trend_down = a["trend"] is not None and a["price"] < a["trend"]
-    up_ev = a["events"] & {"EMA_UP", "RSI_UP"}
-    down_ev = a["events"] & {"EMA_DOWN", "RSI_DOWN"}
-
     # Разворот против открытой сделки — выход
     if pos:
         side = pos.get("side", "long")
-        against = down_ev if side == "long" else up_ev
+        against = reversal_events(pos, a)
         if against:
             reason = "↩️ Разворот: " + ", ".join(EVENT_TEXT[e] for e in sorted(against))
             notify(close_message(title, pos, reason, a["price"]))
+            if trades is not None:
+                trades["closed"].append(trade_record(key, pos, a["price"], reason, candles[-1]["close_time"]))
             del positions[key]
             log.info("%s: выход по развороту", symbol)
         else:
@@ -441,33 +554,14 @@ def check_symbol(symbol, state, min_volume=0):
         return
 
     # Новая сделка
-    side, events = None, None
-    if up_ev and trend_up:
-        side, events = "long", up_ev
-    elif down_ev and trend_down and ALLOW_SHORT:
-        side, events = "short", down_ev
-
-    if not side or not a["atr"]:
-        if up_ev or down_ev:
-            log.info("%s: сигнал против тренда — пропущен", symbol)
-        else:
-            log.info("%s: сигналов нет", symbol)
+    sig, skip = entry_signal(a)
+    if not sig:
+        log.info("%s: %s", symbol, skip)
         return
-
-    entry = a["price"]
-    sign = 1 if side == "long" else -1
-    stop = entry - sign * STOP_ATR * a["atr"]
-    target = entry + sign * TAKE_ATR * a["atr"]
-    if LEVERAGE > 1:
-        liq = liquidation_price(entry, side)
-        if abs(entry - stop) > MAX_STOP_OF_LIQ * abs(entry - liq):
-            log.info("%s: %s пропущен — стоп %s слишком близко к ликвидации %s при x%g",
-                     symbol, SIDE_NAME[side], fmt(stop), fmt(liq), LEVERAGE)
-            return
-
-    positions[key] = {"side": side, "entry": entry, "stop": stop, "target": target, "time": a["time"]}
-    notify(open_message(title, side, entry, stop, target, a, events))
-    log.info("%s: открыт %s по %s", symbol, SIDE_NAME[side], fmt(entry))
+    positions[key] = {"side": sig["side"], "entry": sig["entry"], "stop": sig["stop"],
+                      "target": sig["target"], "time": a["time"]}
+    notify(open_message(title, sig["side"], sig["entry"], sig["stop"], sig["target"], a, sig["events"]))
+    log.info("%s: открыт %s по %s", symbol, SIDE_NAME[sig["side"]], fmt(sig["entry"]))
 
 
 def resolve_symbols():
@@ -483,10 +577,12 @@ def run_check(state):
     min_volume = MIN_VOLUME_USD if all_mode and EXCHANGE == "coinbase" else 0
     log.info("Биржа %s, пар к проверке: %d, таймфрейм %s, плечо x%g",
              EXCHANGE, len(symbols), INTERVAL, LEVERAGE)
+    trades = load_trades()
+    restore_positions(state, trades)
     errors = skipped = 0
     for symbol in symbols:
         try:
-            if check_symbol(symbol, state, min_volume) == "skip":
+            if check_symbol(symbol, state, min_volume, trades) == "skip":
                 skipped += 1
         except Exception as e:
             errors += 1
@@ -496,6 +592,10 @@ def run_check(state):
     if skipped:
         log.info("Пропущено мелких монет (оборот < %s$ в сутки): %d", f"{MIN_VOLUME_USD:,.0f}", skipped)
     save_state(state)
+    try:
+        save_trades(trades, state)
+    except OSError as e:
+        log.error("Не удалось сохранить статистику: %s", e)
     return errors, len(symbols)
 
 
