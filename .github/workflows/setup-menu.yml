@@ -1,0 +1,22 @@
+name: setup-menu
+
+# Один раз после включения GitHub Pages: Actions → setup-menu → Run workflow.
+# Добавляет боту кнопку меню, которая открывает Mini App со статистикой.
+on:
+  workflow_dispatch:
+
+jobs:
+  menu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install requests
+      - run: python setup_menu.py
+        env:
+          TG_TOKEN: ${{ secrets.TG_TOKEN }}
+          TG_CHAT_ID: ${{ secrets.TG_CHAT_ID }}
+          # по умолчанию — адрес GitHub Pages этого репозитория; можно задать свой в переменной WEBAPP_URL
+          WEBAPP_URL: ${{ vars.WEBAPP_URL || format('https://{0}.github.io/{1}/', github.repository_owner, github.event.repository.name) }}
