@@ -1,1 +1,40 @@
-{"open": [], "closed": []}
+{
+ "open": [
+  {
+   "symbol": "AVAX-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 11.006,
+   "stop": 10.82023713953596,
+   "target": 11.377525720928082,
+   "time": 1791021600000
+  },
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.005302,
+   "stop": 0.004986023461983654,
+   "target": 0.005933953076032693,
+   "time": 1790974800000
+  },
+  {
+   "symbol": "ZRO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 1.9733,
+   "stop": 1.8856960196071382,
+   "target": 2.148507960785724,
+   "time": 1791021600000
+  }
+ ],
+ "closed": [],
+ "settings": {
+  "exchange": "coinbase",
+  "interval": "1h",
+  "leverage": 10.0,
+  "stop_atr": 1.5,
+  "take_atr": 3.0
+ },
+ "updated": 1791028454732
+}
