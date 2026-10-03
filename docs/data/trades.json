@@ -19,6 +19,15 @@
    "time": 1790974800000
   },
   {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 119.76,
+   "stop": 118.72815799928719,
+   "target": 121.82368400142563,
+   "time": 1791036000000
+  },
+  {
    "symbol": "ZRO-USD",
    "interval": "1h",
    "side": "long",
@@ -36,5 +45,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791028454732
+ "updated": 1791040785198
 }
