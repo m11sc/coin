@@ -19,15 +19,6 @@
    "time": 1791122400000
   },
   {
-   "symbol": "MON-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.034354,
-   "stop": 0.03330480234227019,
-   "target": 0.03645239531545962,
-   "time": 1791133200000
-  },
-  {
    "symbol": "UNI-USD",
    "interval": "1h",
    "side": "short",
@@ -88,6 +79,20 @@
    "result": "target",
    "move_pct": 1.723,
    "margin_pct": 16.23
+  },
+  {
+   "symbol": "MON-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.034354,
+   "exit": 0.03330480234227019,
+   "stop": 0.03330480234227019,
+   "target": 0.03645239531545962,
+   "open_time": 1791133200000,
+   "close_time": 1791151286513,
+   "result": "stop",
+   "move_pct": -3.054,
+   "margin_pct": -31.54
   }
  ],
  "settings": {
@@ -97,5 +102,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791139958125
+ "updated": 1791151391183
 }
