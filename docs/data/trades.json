@@ -10,24 +10,6 @@
    "time": 1791021600000
   },
   {
-   "symbol": "HBAR-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.10238,
-   "stop": 0.10119776901149717,
-   "target": 0.10474446197700564,
-   "time": 1791122400000
-  },
-  {
-   "symbol": "UNI-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 9.012,
-   "stop": 9.184681071192646,
-   "target": 8.66663785761471,
-   "time": 1791046800000
-  },
-  {
    "symbol": "ZRO-USD",
    "interval": "1h",
    "side": "long",
@@ -93,6 +75,34 @@
    "result": "stop",
    "move_pct": -3.054,
    "margin_pct": -31.54
+  },
+  {
+   "symbol": "HBAR-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.10238,
+   "exit": 0.10474446197700564,
+   "stop": 0.10119776901149717,
+   "target": 0.10474446197700564,
+   "open_time": 1791122400000,
+   "close_time": 1791160033157,
+   "result": "target",
+   "move_pct": 2.309,
+   "margin_pct": 22.09
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 9.012,
+   "exit": 9.0742,
+   "stop": 9.184681071192646,
+   "target": 8.66663785761471,
+   "open_time": 1791046800000,
+   "close_time": 1791158400000,
+   "result": "reverse",
+   "move_pct": -0.69,
+   "margin_pct": -7.9
   }
  ],
  "settings": {
@@ -102,5 +112,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791151391183
+ "updated": 1791160142066
 }
