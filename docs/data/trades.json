@@ -10,6 +10,15 @@
    "time": 1791021600000
   },
   {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1317.6,
+   "stop": 1341.437307701975,
+   "target": 1269.92538459605,
+   "time": 1791176400000
+  },
+  {
    "symbol": "ZRO-USD",
    "interval": "1h",
    "side": "long",
@@ -112,5 +121,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791160142066
+ "updated": 1791180054175
 }
