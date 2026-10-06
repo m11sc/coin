@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "BTC-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 85901.97,
-   "stop": 85340.74814469283,
-   "target": 87024.41371061435,
-   "time": 1791244800000
-  },
-  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "long",
@@ -17,15 +8,6 @@
    "stop": 249.76077316792032,
    "target": 280.29845366415935,
    "time": 1791201600000
-  },
-  {
-   "symbol": "SOL-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 121.02,
-   "stop": 120.02675859655864,
-   "target": 123.00648280688272,
-   "time": 1791244800000
   }
  ],
  "closed": [
@@ -168,6 +150,34 @@
    "result": "target",
    "move_pct": 8.879,
    "margin_pct": 87.79
+  },
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 85901.97,
+   "exit": 85340.74814469283,
+   "stop": 85340.74814469283,
+   "target": 87024.41371061435,
+   "open_time": 1791244800000,
+   "close_time": 1791274231989,
+   "result": "stop",
+   "move_pct": -0.653,
+   "margin_pct": -7.53
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 121.02,
+   "exit": 120.02675859655864,
+   "stop": 120.02675859655864,
+   "target": 123.00648280688272,
+   "open_time": 1791244800000,
+   "close_time": 1791274404058,
+   "result": "stop",
+   "move_pct": -0.821,
+   "margin_pct": -9.21
   }
  ],
  "settings": {
@@ -177,5 +187,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791251355140
+ "updated": 1791274459510
 }
