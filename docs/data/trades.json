@@ -1,22 +1,13 @@
 {
  "open": [
   {
-   "symbol": "AVAX-USD",
+   "symbol": "BTC-USD",
    "interval": "1h",
    "side": "long",
-   "entry": 11.006,
-   "stop": 10.82023713953596,
-   "target": 11.377525720928082,
-   "time": 1791021600000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 70.771,
-   "stop": 69.94816040738844,
-   "target": 72.41667918522312,
-   "time": 1791201600000
+   "entry": 85901.97,
+   "stop": 85340.74814469283,
+   "target": 87024.41371061435,
+   "time": 1791244800000
   },
   {
    "symbol": "QNT-USD",
@@ -28,13 +19,13 @@
    "time": 1791201600000
   },
   {
-   "symbol": "ZRO-USD",
+   "symbol": "SOL-USD",
    "interval": "1h",
    "side": "long",
-   "entry": 1.9733,
-   "stop": 1.8856960196071382,
-   "target": 2.148507960785724,
-   "time": 1791021600000
+   "entry": 121.02,
+   "stop": 120.02675859655864,
+   "target": 123.00648280688272,
+   "time": 1791244800000
   }
  ],
  "closed": [
@@ -135,6 +126,48 @@
    "result": "stop",
    "move_pct": -1.809,
    "margin_pct": -19.09
+  },
+  {
+   "symbol": "AVAX-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 11.006,
+   "exit": 10.82023713953596,
+   "stop": 10.82023713953596,
+   "target": 11.377525720928082,
+   "open_time": 1791021600000,
+   "close_time": 1791251140952,
+   "result": "stop",
+   "move_pct": -1.688,
+   "margin_pct": -17.88
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 70.771,
+   "exit": 69.94816040738844,
+   "stop": 69.94816040738844,
+   "target": 72.41667918522312,
+   "open_time": 1791201600000,
+   "close_time": 1791251247122,
+   "result": "stop",
+   "move_pct": -1.163,
+   "margin_pct": -12.63
+  },
+  {
+   "symbol": "ZRO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 1.9733,
+   "exit": 2.148507960785724,
+   "stop": 1.8856960196071382,
+   "target": 2.148507960785724,
+   "open_time": 1791021600000,
+   "close_time": 1791251353790,
+   "result": "target",
+   "move_pct": 8.879,
+   "margin_pct": 87.79
   }
  ],
  "settings": {
@@ -144,5 +177,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791207374360
+ "updated": 1791251355140
 }
