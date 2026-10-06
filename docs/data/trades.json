@@ -10,15 +10,6 @@
    "time": 1791201600000
   },
   {
-   "symbol": "SOL-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 121.73,
-   "stop": 120.56553161940293,
-   "target": 124.05893676119416,
-   "time": 1791295200000
-  },
-  {
    "symbol": "TAO-USD",
    "interval": "1h",
    "side": "long",
@@ -196,6 +187,20 @@
    "result": "stop",
    "move_pct": -0.821,
    "margin_pct": -9.21
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 121.73,
+   "exit": 120.56553161940293,
+   "stop": 120.56553161940293,
+   "target": 124.05893676119416,
+   "open_time": 1791295200000,
+   "close_time": 1791317549304,
+   "result": "stop",
+   "move_pct": -0.957,
+   "margin_pct": -10.57
   }
  ],
  "settings": {
@@ -205,5 +210,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791299353954
+ "updated": 1791317585945
 }
