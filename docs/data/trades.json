@@ -1,13 +1,22 @@
 {
  "open": [
   {
-   "symbol": "SOL-USD",
+   "symbol": "ADA-USD",
    "interval": "1h",
-   "side": "short",
-   "entry": 118.97,
-   "stop": 120.15286501196161,
-   "target": 116.60426997607678,
-   "time": 1791334800000
+   "side": "long",
+   "entry": 0.25601,
+   "stop": 0.2509089564474175,
+   "target": 0.26621208710516503,
+   "time": 1791385200000
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 243.25,
+   "stop": 234.4343204684491,
+   "target": 260.8813590631018,
+   "time": 1791385200000
   },
   {
    "symbol": "ZEC-USD",
@@ -243,6 +252,20 @@
    "result": "stop",
    "move_pct": -3.916,
    "margin_pct": -40.16
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 118.97,
+   "exit": 116.60426997607678,
+   "stop": 120.15286501196161,
+   "target": 116.60426997607678,
+   "open_time": 1791334800000,
+   "close_time": 1791390799555,
+   "result": "target",
+   "move_pct": 1.989,
+   "margin_pct": 18.89
   }
  ],
  "settings": {
@@ -252,5 +275,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791364716793
+ "updated": 1791390850328
 }
