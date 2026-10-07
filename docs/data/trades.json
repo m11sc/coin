@@ -1,24 +1,6 @@
 {
  "open": [
   {
-   "symbol": "LINK-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 13.699,
-   "stop": 13.874705429313511,
-   "target": 13.347589141372975,
-   "time": 1791334800000
-  },
-  {
-   "symbol": "QNT-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 259.94,
-   "stop": 249.76077316792032,
-   "target": 280.29845366415935,
-   "time": 1791201600000
-  },
-  {
    "symbol": "SOL-USD",
    "interval": "1h",
    "side": "short",
@@ -233,6 +215,34 @@
    "result": "stop",
    "move_pct": -1.517,
    "margin_pct": -16.17
+  },
+  {
+   "symbol": "LINK-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 13.699,
+   "exit": 13.347589141372975,
+   "stop": 13.874705429313511,
+   "target": 13.347589141372975,
+   "open_time": 1791334800000,
+   "close_time": 1791364644150,
+   "result": "target",
+   "move_pct": 2.565,
+   "margin_pct": 24.65
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 259.94,
+   "exit": 249.76077316792032,
+   "stop": 249.76077316792032,
+   "target": 280.29845366415935,
+   "open_time": 1791201600000,
+   "close_time": 1791364673358,
+   "result": "stop",
+   "move_pct": -3.916,
+   "margin_pct": -40.16
   }
  ],
  "settings": {
@@ -242,5 +252,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791341196899
+ "updated": 1791364716793
 }
