@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "LINK-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 13.699,
+   "stop": 13.874705429313511,
+   "target": 13.347589141372975,
+   "time": 1791334800000
+  },
+  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "long",
@@ -10,13 +19,22 @@
    "time": 1791201600000
   },
   {
-   "symbol": "TAO-USD",
+   "symbol": "SOL-USD",
    "interval": "1h",
-   "side": "long",
-   "entry": 305.0,
-   "stop": 300.37333251010693,
-   "target": 314.25333497978613,
-   "time": 1791295200000
+   "side": "short",
+   "entry": 118.97,
+   "stop": 120.15286501196161,
+   "target": 116.60426997607678,
+   "time": 1791334800000
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1322.8,
+   "stop": 1352.172393788832,
+   "target": 1264.0552124223357,
+   "time": 1791334800000
   }
  ],
  "closed": [
@@ -201,6 +219,20 @@
    "result": "stop",
    "move_pct": -0.957,
    "margin_pct": -10.57
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 305.0,
+   "exit": 300.37333251010693,
+   "stop": 300.37333251010693,
+   "target": 314.25333497978613,
+   "open_time": 1791295200000,
+   "close_time": 1791341160901,
+   "result": "stop",
+   "move_pct": -1.517,
+   "margin_pct": -16.17
   }
  ],
  "settings": {
@@ -210,5 +242,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791317585945
+ "updated": 1791341196899
 }
