@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "ADA-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.25601,
-   "stop": 0.2509089564474175,
-   "target": 0.26621208710516503,
-   "time": 1791385200000
-  },
-  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "long",
@@ -17,15 +8,6 @@
    "stop": 234.4343204684491,
    "target": 260.8813590631018,
    "time": 1791385200000
-  },
-  {
-   "symbol": "ZEC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1322.8,
-   "stop": 1352.172393788832,
-   "target": 1264.0552124223357,
-   "time": 1791334800000
   }
  ],
  "closed": [
@@ -266,6 +248,34 @@
    "result": "target",
    "move_pct": 1.989,
    "margin_pct": 18.89
+  },
+  {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.25601,
+   "exit": 0.2509089564474175,
+   "stop": 0.2509089564474175,
+   "target": 0.26621208710516503,
+   "open_time": 1791385200000,
+   "close_time": 1791443904306,
+   "result": "stop",
+   "move_pct": -1.993,
+   "margin_pct": -20.93
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1322.8,
+   "exit": 1264.0552124223357,
+   "stop": 1352.172393788832,
+   "target": 1264.0552124223357,
+   "open_time": 1791334800000,
+   "close_time": 1791444082421,
+   "result": "target",
+   "move_pct": 4.441,
+   "margin_pct": 43.41
   }
  ],
  "settings": {
@@ -275,5 +285,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791390850328
+ "updated": 1791444087241
 }
