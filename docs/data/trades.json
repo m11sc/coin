@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "LIGHTER-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 3.555,
-   "stop": 3.655094752880111,
-   "target": 3.3548104942397776,
-   "time": 1791547200000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -304,6 +294,20 @@
    "result": "stop",
    "move_pct": -4.148,
    "margin_pct": -42.48
+  },
+  {
+   "symbol": "LIGHTER-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.555,
+   "exit": 3.655094752880111,
+   "stop": 3.655094752880111,
+   "target": 3.3548104942397776,
+   "open_time": 1791547200000,
+   "close_time": 1791571772935,
+   "result": "stop",
+   "move_pct": -2.816,
+   "margin_pct": -29.16
   }
  ],
  "settings": {
@@ -313,5 +317,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791551687141
+ "updated": 1791571892600
 }
