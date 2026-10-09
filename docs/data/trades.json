@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "LIGHTER-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.555,
+   "stop": 3.655094752880111,
+   "target": 3.3548104942397776,
+   "time": 1791547200000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -303,5 +313,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791505265288
+ "updated": 1791551687141
 }
