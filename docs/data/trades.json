@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "AAVE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 167.32,
+   "stop": 170.75406749478097,
+   "target": 160.451865010438,
+   "time": 1791579600000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -317,5 +327,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791571892600
+ "updated": 1791586754939
 }
