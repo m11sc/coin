@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ONDO-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.48985,
-   "stop": 0.469531914155135,
-   "target": 0.53048617168973,
-   "time": 1791486000000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -290,6 +280,20 @@
    "result": "stop",
    "move_pct": -3.624,
    "margin_pct": -37.24
+  },
+  {
+   "symbol": "ONDO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.48985,
+   "exit": 0.469531914155135,
+   "stop": 0.469531914155135,
+   "target": 0.53048617168973,
+   "open_time": 1791486000000,
+   "close_time": 1791505148002,
+   "result": "stop",
+   "move_pct": -4.148,
+   "margin_pct": -42.48
   }
  ],
  "settings": {
@@ -299,5 +303,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791490179925
+ "updated": 1791505265288
 }
