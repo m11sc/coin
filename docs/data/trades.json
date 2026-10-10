@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "AAVE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 167.32,
-   "stop": 170.75406749478097,
-   "target": 160.451865010438,
-   "time": 1791579600000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -318,6 +308,20 @@
    "result": "stop",
    "move_pct": -2.816,
    "margin_pct": -29.16
+  },
+  {
+   "symbol": "AAVE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 167.32,
+   "exit": 170.75406749478097,
+   "stop": 170.75406749478097,
+   "target": 160.451865010438,
+   "open_time": 1791579600000,
+   "close_time": 1791619184377,
+   "result": "stop",
+   "move_pct": -2.052,
+   "margin_pct": -21.52
   }
  ],
  "settings": {
@@ -327,5 +331,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791586754939
+ "updated": 1791619427207
 }
