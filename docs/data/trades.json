@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.005485,
+   "stop": 0.005635968275275717,
+   "target": 0.005183063449448567,
+   "time": 1791666000000
+  },
+  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "short",
@@ -341,5 +350,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791657759408
+ "updated": 1791669679131
 }
