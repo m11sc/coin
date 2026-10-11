@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2535.48,
+   "stop": 2551.582300290181,
+   "target": 2503.2753994196382,
+   "time": 1791738000000
+  },
+  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "short",
@@ -8,6 +17,33 @@
    "stop": 248.97886283592533,
    "target": 227.2622743281494,
    "time": 1791651600000
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 112.01,
+   "stop": 113.04805837575209,
+   "target": 109.93388324849583,
+   "time": 1791738000000
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 7.8128,
+   "stop": 7.9532974523824675,
+   "target": 7.531805095235066,
+   "time": 1791738000000
+  },
+  {
+   "symbol": "XLM-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.203149,
+   "stop": 0.2056765374771852,
+   "target": 0.1980939250456296,
+   "time": 1791738000000
   }
  ],
  "closed": [
@@ -355,5 +391,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791724283078
+ "updated": 1791741921026
 }
