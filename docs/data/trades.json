@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "ETH-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2535.48,
-   "stop": 2551.582300290181,
-   "target": 2503.2753994196382,
-   "time": 1791738000000
-  },
-  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "short",
@@ -387,6 +378,20 @@
    "result": "target",
    "move_pct": 1.854,
    "margin_pct": 17.54
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2535.48,
+   "exit": 2551.582300290181,
+   "stop": 2551.582300290181,
+   "target": 2503.2753994196382,
+   "open_time": 1791738000000,
+   "close_time": 1791786813719,
+   "result": "stop",
+   "move_pct": -0.635,
+   "margin_pct": -7.35
   }
  ],
  "settings": {
@@ -396,5 +401,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791755135376
+ "updated": 1791786936516
 }
