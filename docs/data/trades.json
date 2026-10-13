@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "VVV-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 23.4616,
-   "stop": 24.16608633208502,
-   "target": 22.052627335829968,
-   "time": 1791817200000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -416,6 +406,20 @@
    "result": "target",
    "move_pct": 2.488,
    "margin_pct": 23.88
+  },
+  {
+   "symbol": "VVV-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 23.4616,
+   "exit": 22.052627335829968,
+   "stop": 24.16608633208502,
+   "target": 22.052627335829968,
+   "open_time": 1791817200000,
+   "close_time": 1791861228160,
+   "result": "target",
+   "move_pct": 6.005,
+   "margin_pct": 59.05
   }
  ],
  "settings": {
@@ -425,5 +429,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791820972105
+ "updated": 1791861244064
 }
