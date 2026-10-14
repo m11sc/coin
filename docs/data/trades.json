@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2495.83,
+   "stop": 2521.221024377352,
+   "target": 2445.0479512452957,
+   "time": 1791932400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -429,5 +439,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791861244064
+ "updated": 1791939086040
 }
