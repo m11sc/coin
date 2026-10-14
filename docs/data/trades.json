@@ -1,13 +1,13 @@
 {
  "open": [
   {
-   "symbol": "ETH-USD",
+   "symbol": "LTC-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 2495.83,
-   "stop": 2521.221024377352,
-   "target": 2445.0479512452957,
-   "time": 1791932400000
+   "entry": 61.395,
+   "stop": 62.138597931764906,
+   "target": 59.9078041364702,
+   "time": 1791968400000
   }
  ],
  "closed": [
@@ -430,6 +430,20 @@
    "result": "target",
    "move_pct": 6.005,
    "margin_pct": 59.05
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2495.83,
+   "exit": 2521.221024377352,
+   "stop": 2521.221024377352,
+   "target": 2445.0479512452957,
+   "open_time": 1791932400000,
+   "close_time": 1791973579958,
+   "result": "stop",
+   "move_pct": -1.017,
+   "margin_pct": -11.17
   }
  ],
  "settings": {
@@ -439,5 +453,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791939086040
+ "updated": 1791973691033
 }
