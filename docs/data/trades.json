@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.90269,
+   "stop": 0.8828448920416919,
+   "target": 0.9423802159166161,
+   "time": 1792018800000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -457,5 +467,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1791991211810
+ "updated": 1792024949657
 }
