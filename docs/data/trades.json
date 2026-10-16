@@ -53,15 +53,6 @@
    "stop": 1.0335302937337056,
    "target": 0.9632394125325886,
    "time": 1792170000000
-  },
-  {
-   "symbol": "ZRO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2.015,
-   "stop": 2.103913651740503,
-   "target": 1.837172696518995,
-   "time": 1792170000000
   }
  ],
  "closed": [
@@ -526,6 +517,20 @@
    "result": "stop",
    "move_pct": -2.198,
    "margin_pct": -22.98
+  },
+  {
+   "symbol": "ZRO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2.015,
+   "exit": 2.103913651740503,
+   "stop": 2.103913651740503,
+   "target": 1.837172696518995,
+   "open_time": 1792170000000,
+   "close_time": 1792187529508,
+   "result": "stop",
+   "move_pct": -4.413,
+   "margin_pct": -45.13
   }
  ],
  "settings": {
@@ -535,5 +540,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792177165006
+ "updated": 1792187530924
 }
