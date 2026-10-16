@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "HYPE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 80.14,
+   "stop": 81.36790420677114,
+   "target": 77.68419158645771,
+   "time": 1792159200000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -471,5 +481,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792041153119
+ "updated": 1792164760341
 }
