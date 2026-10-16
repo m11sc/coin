@@ -1,6 +1,33 @@
 {
  "open": [
   {
+   "symbol": "ENA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.19671,
+   "stop": 0.2024002464492807,
+   "target": 0.1853295071014386,
+   "time": 1792170000000
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2408.02,
+   "stop": 2440.778336436665,
+   "target": 2342.5033271266693,
+   "time": 1792170000000
+  },
+  {
+   "symbol": "HBAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.08206,
+   "stop": 0.08361392034210621,
+   "target": 0.07895215931578757,
+   "time": 1792170000000
+  },
+  {
    "symbol": "HYPE-USD",
    "interval": "1h",
    "side": "short",
@@ -8,6 +35,33 @@
    "stop": 81.36790420677114,
    "target": 77.68419158645771,
    "time": 1792159200000
+  },
+  {
+   "symbol": "ONDO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.45196,
+   "stop": 0.4619345851277976,
+   "target": 0.4320108297444047,
+   "time": 1792170000000
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0101,
+   "stop": 1.0335302937337056,
+   "target": 0.9632394125325886,
+   "time": 1792170000000
+  },
+  {
+   "symbol": "ZRO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2.015,
+   "stop": 2.103913651740503,
+   "target": 1.837172696518995,
+   "time": 1792170000000
   }
  ],
  "closed": [
@@ -481,5 +535,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792164760341
+ "updated": 1792177165006
 }
