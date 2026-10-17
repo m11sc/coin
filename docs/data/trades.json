@@ -8,42 +8,6 @@
    "stop": 2440.778336436665,
    "target": 2342.5033271266693,
    "time": 1792170000000
-  },
-  {
-   "symbol": "HYPE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 80.14,
-   "stop": 81.36790420677114,
-   "target": 77.68419158645771,
-   "time": 1792159200000
-  },
-  {
-   "symbol": "NEAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 5.0561,
-   "stop": 5.180166965242282,
-   "target": 4.807966069515436,
-   "time": 1792242000000
-  },
-  {
-   "symbol": "ONDO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.45196,
-   "stop": 0.4619345851277976,
-   "target": 0.4320108297444047,
-   "time": 1792170000000
-  },
-  {
-   "symbol": "SUI-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1.0101,
-   "stop": 1.0335302937337056,
-   "target": 0.9632394125325886,
-   "time": 1792170000000
   }
  ],
  "closed": [
@@ -578,6 +542,62 @@
    "result": "target",
    "move_pct": 4.189,
    "margin_pct": 40.89
+  },
+  {
+   "symbol": "HYPE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 80.14,
+   "exit": 77.68419158645771,
+   "stop": 81.36790420677114,
+   "target": 77.68419158645771,
+   "open_time": 1792159200000,
+   "close_time": 1792279200943,
+   "result": "target",
+   "move_pct": 3.064,
+   "margin_pct": 29.64
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 5.0561,
+   "exit": 4.807966069515436,
+   "stop": 5.180166965242282,
+   "target": 4.807966069515436,
+   "open_time": 1792242000000,
+   "close_time": 1792279234147,
+   "result": "target",
+   "move_pct": 4.908,
+   "margin_pct": 48.08
+  },
+  {
+   "symbol": "ONDO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.45196,
+   "exit": 0.4320108297444047,
+   "stop": 0.4619345851277976,
+   "target": 0.4320108297444047,
+   "open_time": 1792170000000,
+   "close_time": 1792279239842,
+   "result": "target",
+   "move_pct": 4.414,
+   "margin_pct": 43.14
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0101,
+   "exit": 0.9632394125325886,
+   "stop": 1.0335302937337056,
+   "target": 0.9632394125325886,
+   "open_time": 1792170000000,
+   "close_time": 1792279277236,
+   "result": "target",
+   "move_pct": 4.639,
+   "margin_pct": 45.39
   }
  ],
  "settings": {
@@ -587,5 +607,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792272748454
+ "updated": 1792279310164
 }
