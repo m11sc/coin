@@ -19,15 +19,6 @@
    "time": 1792170000000
   },
   {
-   "symbol": "HBAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.08206,
-   "stop": 0.08361392034210621,
-   "target": 0.07895215931578757,
-   "time": 1792170000000
-  },
-  {
    "symbol": "HYPE-USD",
    "interval": "1h",
    "side": "short",
@@ -531,6 +522,20 @@
    "result": "stop",
    "move_pct": -4.413,
    "margin_pct": -45.13
+  },
+  {
+   "symbol": "HBAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.08206,
+   "exit": 0.08361392034210621,
+   "stop": 0.08361392034210621,
+   "target": 0.07895215931578757,
+   "open_time": 1792170000000,
+   "close_time": 1792195084204,
+   "result": "stop",
+   "move_pct": -1.894,
+   "margin_pct": -19.94
   }
  ],
  "settings": {
@@ -540,5 +545,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792187530924
+ "updated": 1792195243478
 }
