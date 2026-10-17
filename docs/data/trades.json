@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.90154,
+   "stop": 0.8820201884882788,
+   "target": 0.9405796230234426,
+   "time": 1792231200000
+  },
+  {
    "symbol": "ENA-USD",
    "interval": "1h",
    "side": "short",
@@ -545,5 +554,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792195243478
+ "updated": 1792235836040
 }
