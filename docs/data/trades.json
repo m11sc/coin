@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "AERO-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.90154,
-   "stop": 0.8820201884882788,
-   "target": 0.9405796230234426,
-   "time": 1792231200000
-  },
-  {
    "symbol": "ENA-USD",
    "interval": "1h",
    "side": "short",
@@ -37,6 +28,15 @@
    "time": 1792159200000
   },
   {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 5.0561,
+   "stop": 5.180166965242282,
+   "target": 4.807966069515436,
+   "time": 1792242000000
+  },
+  {
    "symbol": "ONDO-USD",
    "interval": "1h",
    "side": "short",
@@ -44,6 +44,15 @@
    "stop": 0.4619345851277976,
    "target": 0.4320108297444047,
    "time": 1792170000000
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 201.69,
+   "stop": 205.91405394817016,
+   "target": 193.24189210365967,
+   "time": 1792242000000
   },
   {
    "symbol": "SUI-USD",
@@ -545,6 +554,20 @@
    "result": "stop",
    "move_pct": -1.894,
    "margin_pct": -19.94
+  },
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.90154,
+   "exit": 0.8820201884882788,
+   "stop": 0.8820201884882788,
+   "target": 0.9405796230234426,
+   "open_time": 1792231200000,
+   "close_time": 1792246340928,
+   "result": "stop",
+   "move_pct": -2.165,
+   "margin_pct": -22.65
   }
  ],
  "settings": {
@@ -554,5 +577,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792235836040
+ "updated": 1792246521638
 }
