@@ -37,15 +37,6 @@
    "time": 1792170000000
   },
   {
-   "symbol": "QNT-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 201.69,
-   "stop": 205.91405394817016,
-   "target": 193.24189210365967,
-   "time": 1792242000000
-  },
-  {
    "symbol": "SUI-USD",
    "interval": "1h",
    "side": "short",
@@ -573,6 +564,20 @@
    "result": "reverse",
    "move_pct": 3.065,
    "margin_pct": 29.65
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 201.69,
+   "exit": 193.24189210365967,
+   "stop": 205.91405394817016,
+   "target": 193.24189210365967,
+   "open_time": 1792242000000,
+   "close_time": 1792272705657,
+   "result": "target",
+   "move_pct": 4.189,
+   "margin_pct": 40.89
   }
  ],
  "settings": {
@@ -582,5 +587,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792264829347
+ "updated": 1792272748454
 }
