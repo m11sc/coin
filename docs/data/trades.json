@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "ETH-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2408.02,
-   "stop": 2440.778336436665,
-   "target": 2342.5033271266693,
-   "time": 1792170000000
-  },
-  {
    "symbol": "HBAR-USD",
    "interval": "1h",
    "side": "short",
@@ -17,15 +8,6 @@
    "stop": 0.08656563065193686,
    "target": 0.07982873869612632,
    "time": 1792346400000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 58.079,
-   "stop": 58.91074770748031,
-   "target": 56.415504585039386,
-   "time": 1792335600000
   }
  ],
  "closed": [
@@ -616,6 +598,34 @@
    "result": "target",
    "move_pct": 4.639,
    "margin_pct": 45.39
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2408.02,
+   "exit": 2342.5033271266693,
+   "stop": 2440.778336436665,
+   "target": 2342.5033271266693,
+   "open_time": 1792170000000,
+   "close_time": 1792358478761,
+   "result": "target",
+   "move_pct": 2.721,
+   "margin_pct": 26.21
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 58.079,
+   "exit": 57.297,
+   "stop": 58.91074770748031,
+   "target": 56.415504585039386,
+   "open_time": 1792335600000,
+   "close_time": 1792357200000,
+   "result": "reverse",
+   "move_pct": 1.346,
+   "margin_pct": 12.46
   }
  ],
  "settings": {
@@ -625,5 +635,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792350225633
+ "updated": 1792358604013
 }
