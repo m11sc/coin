@@ -10,6 +10,15 @@
    "time": 1792170000000
   },
   {
+   "symbol": "HBAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.08432,
+   "stop": 0.08656563065193686,
+   "target": 0.07982873869612632,
+   "time": 1792346400000
+  },
+  {
    "symbol": "LTC-USD",
    "interval": "1h",
    "side": "short",
@@ -616,5 +625,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792342501657
+ "updated": 1792350225633
 }
