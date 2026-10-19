@@ -8,15 +8,6 @@
    "stop": 0.08656563065193686,
    "target": 0.07982873869612632,
    "time": 1792346400000
-  },
-  {
-   "symbol": "SOL-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 103.89,
-   "stop": 105.2576809315117,
-   "target": 101.1546381369766,
-   "time": 1792432800000
   }
  ],
  "closed": [
@@ -649,6 +640,20 @@
    "result": "stop",
    "move_pct": -0.639,
    "margin_pct": -7.39
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 103.89,
+   "exit": 105.2576809315117,
+   "stop": 105.2576809315117,
+   "target": 101.1546381369766,
+   "open_time": 1792432800000,
+   "close_time": 1792450948852,
+   "result": "stop",
+   "move_pct": -1.316,
+   "margin_pct": -14.16
   }
  ],
  "settings": {
@@ -658,5 +663,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792438189494
+ "updated": 1792451004609
 }
