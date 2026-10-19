@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 82199.79,
+   "stop": 81674.92954104365,
+   "target": 83249.51091791269,
+   "time": 1792368000000
+  },
+  {
    "symbol": "HBAR-USD",
    "interval": "1h",
    "side": "short",
@@ -635,5 +644,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792358604013
+ "updated": 1792373210822
 }
