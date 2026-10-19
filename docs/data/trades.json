@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "BTC-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 82199.79,
-   "stop": 81674.92954104365,
-   "target": 83249.51091791269,
-   "time": 1792368000000
-  },
-  {
    "symbol": "HBAR-USD",
    "interval": "1h",
    "side": "short",
@@ -17,6 +8,15 @@
    "stop": 0.08656563065193686,
    "target": 0.07982873869612632,
    "time": 1792346400000
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 103.89,
+   "stop": 105.2576809315117,
+   "target": 101.1546381369766,
+   "time": 1792432800000
   }
  ],
  "closed": [
@@ -635,6 +635,20 @@
    "result": "reverse",
    "move_pct": 1.346,
    "margin_pct": 12.46
+  },
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 82199.79,
+   "exit": 81674.92954104365,
+   "stop": 81674.92954104365,
+   "target": 83249.51091791269,
+   "open_time": 1792368000000,
+   "close_time": 1792438035306,
+   "result": "stop",
+   "move_pct": -0.639,
+   "margin_pct": -7.39
   }
  ],
  "settings": {
@@ -644,5 +658,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792373210822
+ "updated": 1792438189494
 }
