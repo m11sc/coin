@@ -10,6 +10,15 @@
    "time": 1792346400000
   },
   {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 192.45,
+   "stop": 197.3059816980671,
+   "target": 182.73803660386577,
+   "time": 1792472400000
+  },
+  {
    "symbol": "XRP-USD",
    "interval": "1h",
    "side": "short",
@@ -672,5 +681,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792460216137
+ "updated": 1792477977088
 }
