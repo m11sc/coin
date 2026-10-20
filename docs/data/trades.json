@@ -55,15 +55,6 @@
    "time": 1792508400000
   },
   {
-   "symbol": "PUMP-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.004509,
-   "stop": 0.0046652693691397835,
-   "target": 0.004196461261720432,
-   "time": 1792508400000
-  },
-  {
    "symbol": "SOL-USD",
    "interval": "1h",
    "side": "short",
@@ -88,15 +79,6 @@
    "entry": 269.77,
    "stop": 275.8208437562117,
    "target": 257.6683124875766,
-   "time": 1792508400000
-  },
-  {
-   "symbol": "UNI-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 7.2732,
-   "stop": 7.453727651280379,
-   "target": 6.912144697439243,
    "time": 1792508400000
   }
  ],
@@ -772,6 +754,34 @@
    "result": "stop",
    "move_pct": -1.041,
    "margin_pct": -11.41
+  },
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.004509,
+   "exit": 0.0046652693691397835,
+   "stop": 0.0046652693691397835,
+   "target": 0.004196461261720432,
+   "open_time": 1792508400000,
+   "close_time": 1792526482727,
+   "result": "stop",
+   "move_pct": -3.466,
+   "margin_pct": -35.66
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 7.2732,
+   "exit": 7.453727651280379,
+   "stop": 7.453727651280379,
+   "target": 6.912144697439243,
+   "open_time": 1792508400000,
+   "close_time": 1792526515072,
+   "result": "stop",
+   "move_pct": -2.482,
+   "margin_pct": -25.82
   }
  ],
  "settings": {
@@ -781,5 +791,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792513042807
+ "updated": 1792526534013
 }
