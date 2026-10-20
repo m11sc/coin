@@ -1,6 +1,33 @@
 {
  "open": [
   {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.22126,
+   "stop": 0.2253016046635091,
+   "target": 0.21317679067298184,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.08055,
+   "stop": 0.081685772327617,
+   "target": 0.07827845534476596,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2438.7,
+   "stop": 2471.4343701660055,
+   "target": 2373.2312596679885,
+   "time": 1792508400000
+  },
+  {
    "symbol": "HBAR-USD",
    "interval": "1h",
    "side": "short",
@@ -10,22 +37,67 @@
    "time": 1792346400000
   },
   {
-   "symbol": "QNT-USD",
+   "symbol": "HYPE-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 192.45,
-   "stop": 197.3059816980671,
-   "target": 182.73803660386577,
-   "time": 1792472400000
+   "entry": 79.78,
+   "stop": 81.13017445046208,
+   "target": 77.07965109907585,
+   "time": 1792508400000
   },
   {
-   "symbol": "XRP-USD",
+   "symbol": "LINK-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 1.2967,
-   "stop": 1.3101929037392286,
-   "target": 1.2697141925215427,
-   "time": 1792454400000
+   "entry": 12.193,
+   "stop": 12.400892731124262,
+   "target": 11.777214537751473,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.004509,
+   "stop": 0.0046652693691397835,
+   "target": 0.004196461261720432,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 105.76,
+   "stop": 107.40664601970717,
+   "target": 102.46670796058568,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0128,
+   "stop": 1.0352312385844344,
+   "target": 0.9679375228311311,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 269.77,
+   "stop": 275.8208437562117,
+   "target": 257.6683124875766,
+   "time": 1792508400000
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 7.2732,
+   "stop": 7.453727651280379,
+   "target": 6.912144697439243,
+   "time": 1792508400000
   }
  ],
  "closed": [
@@ -672,6 +744,34 @@
    "result": "stop",
    "move_pct": -1.316,
    "margin_pct": -14.16
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 192.45,
+   "exit": 197.3059816980671,
+   "stop": 197.3059816980671,
+   "target": 182.73803660386577,
+   "open_time": 1792472400000,
+   "close_time": 1792512970450,
+   "result": "stop",
+   "move_pct": -2.523,
+   "margin_pct": -26.23
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.2967,
+   "exit": 1.3101929037392286,
+   "stop": 1.3101929037392286,
+   "target": 1.2697141925215427,
+   "open_time": 1792454400000,
+   "close_time": 1792513033184,
+   "result": "stop",
+   "move_pct": -1.041,
+   "margin_pct": -11.41
   }
  ],
  "settings": {
@@ -681,5 +781,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792477977088
+ "updated": 1792513042807
 }
