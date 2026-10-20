@@ -10,15 +10,6 @@
    "time": 1792508400000
   },
   {
-   "symbol": "DOGE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.08055,
-   "stop": 0.081685772327617,
-   "target": 0.07827845534476596,
-   "time": 1792508400000
-  },
-  {
    "symbol": "ETH-USD",
    "interval": "1h",
    "side": "short",
@@ -35,15 +26,6 @@
    "stop": 0.08656563065193686,
    "target": 0.07982873869612632,
    "time": 1792346400000
-  },
-  {
-   "symbol": "HYPE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 79.78,
-   "stop": 81.13017445046208,
-   "target": 77.07965109907585,
-   "time": 1792508400000
   },
   {
    "symbol": "LINK-USD",
@@ -70,15 +52,6 @@
    "entry": 1.0128,
    "stop": 1.0352312385844344,
    "target": 0.9679375228311311,
-   "time": 1792508400000
-  },
-  {
-   "symbol": "TAO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 269.77,
-   "stop": 275.8208437562117,
-   "target": 257.6683124875766,
    "time": 1792508400000
   }
  ],
@@ -782,6 +755,48 @@
    "result": "stop",
    "move_pct": -2.482,
    "margin_pct": -25.82
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.08055,
+   "exit": 0.081685772327617,
+   "stop": 0.081685772327617,
+   "target": 0.07827845534476596,
+   "open_time": 1792508400000,
+   "close_time": 1792537042902,
+   "result": "stop",
+   "move_pct": -1.41,
+   "margin_pct": -15.1
+  },
+  {
+   "symbol": "HYPE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 79.78,
+   "exit": 81.13017445046208,
+   "stop": 81.13017445046208,
+   "target": 77.07965109907585,
+   "open_time": 1792508400000,
+   "close_time": 1792537082113,
+   "result": "stop",
+   "move_pct": -1.692,
+   "margin_pct": -17.92
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 269.77,
+   "exit": 275.8208437562117,
+   "stop": 275.8208437562117,
+   "target": 257.6683124875766,
+   "open_time": 1792508400000,
+   "close_time": 1792537186999,
+   "result": "stop",
+   "move_pct": -2.243,
+   "margin_pct": -23.43
   }
  ],
  "settings": {
@@ -791,5 +806,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792526534013
+ "updated": 1792537223049
 }
