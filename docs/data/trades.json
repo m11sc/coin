@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "ADA-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.22126,
-   "stop": 0.2253016046635091,
-   "target": 0.21317679067298184,
-   "time": 1792508400000
-  },
-  {
    "symbol": "ETH-USD",
    "interval": "1h",
    "side": "short",
@@ -26,15 +17,6 @@
    "stop": 0.08656563065193686,
    "target": 0.07982873869612632,
    "time": 1792346400000
-  },
-  {
-   "symbol": "LINK-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 12.193,
-   "stop": 12.400892731124262,
-   "target": 11.777214537751473,
-   "time": 1792508400000
   },
   {
    "symbol": "SOL-USD",
@@ -802,6 +784,34 @@
    "result": "stop",
    "move_pct": -2.215,
    "margin_pct": -23.15
+  },
+  {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.22126,
+   "exit": 0.2253016046635091,
+   "stop": 0.2253016046635091,
+   "target": 0.21317679067298184,
+   "open_time": 1792508400000,
+   "close_time": 1792562296608,
+   "result": "stop",
+   "move_pct": -1.827,
+   "margin_pct": -19.27
+  },
+  {
+   "symbol": "LINK-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 12.193,
+   "exit": 12.400892731124262,
+   "stop": 12.400892731124262,
+   "target": 11.777214537751473,
+   "open_time": 1792508400000,
+   "close_time": 1792562422838,
+   "result": "stop",
+   "move_pct": -1.705,
+   "margin_pct": -18.05
   }
  ],
  "settings": {
@@ -811,5 +821,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792545134300
+ "updated": 1792562533770
 }
