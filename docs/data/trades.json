@@ -44,15 +44,6 @@
    "stop": 107.40664601970717,
    "target": 102.46670796058568,
    "time": 1792508400000
-  },
-  {
-   "symbol": "SUI-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1.0128,
-   "stop": 1.0352312385844344,
-   "target": 0.9679375228311311,
-   "time": 1792508400000
   }
  ],
  "closed": [
@@ -797,6 +788,20 @@
    "result": "stop",
    "move_pct": -2.243,
    "margin_pct": -23.43
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0128,
+   "exit": 1.0352312385844344,
+   "stop": 1.0352312385844344,
+   "target": 0.9679375228311311,
+   "open_time": 1792508400000,
+   "close_time": 1792545085604,
+   "result": "stop",
+   "move_pct": -2.215,
+   "margin_pct": -23.15
   }
  ],
  "settings": {
@@ -806,5 +811,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792537223049
+ "updated": 1792545134300
 }
