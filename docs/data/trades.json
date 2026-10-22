@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 1217.66,
+   "stop": 1178.999946460225,
+   "target": 1294.9801070795502,
+   "time": 1792692000000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -835,5 +845,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792683229310
+ "updated": 1792697057199
 }
