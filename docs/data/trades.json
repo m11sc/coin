@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.2145,
+   "stop": 0.21770042862435018,
+   "target": 0.2080991427512996,
+   "time": 1792778400000
+  },
+  {
    "symbol": "LTC-USD",
    "interval": "1h",
    "side": "short",
@@ -8,6 +17,15 @@
    "stop": 59.90713601245521,
    "target": 57.75572797508956,
    "time": 1792746000000
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.982,
+   "stop": 0.9968544623889493,
+   "target": 0.9522910752221014,
+   "time": 1792778400000
   },
   {
    "symbol": "ZEC-USD",
@@ -854,5 +872,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792750757969
+ "updated": 1792782674866
 }
