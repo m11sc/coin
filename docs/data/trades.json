@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 59.19,
+   "stop": 59.90713601245521,
+   "target": 57.75572797508956,
+   "time": 1792746000000
+  },
+  {
    "symbol": "ZEC-USD",
    "interval": "1h",
    "side": "long",
@@ -845,5 +854,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792697057199
+ "updated": 1792750757969
 }
