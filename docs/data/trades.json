@@ -10,15 +10,6 @@
    "time": 1792778400000
   },
   {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 59.19,
-   "stop": 59.90713601245521,
-   "target": 57.75572797508956,
-   "time": 1792746000000
-  },
-  {
    "symbol": "SUI-USD",
    "interval": "1h",
    "side": "short",
@@ -26,15 +17,6 @@
    "stop": 0.9968544623889493,
    "target": 0.9522910752221014,
    "time": 1792778400000
-  },
-  {
-   "symbol": "ZEC-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 1217.66,
-   "stop": 1178.999946460225,
-   "target": 1294.9801070795502,
-   "time": 1792692000000
   }
  ],
  "closed": [
@@ -863,6 +845,34 @@
    "result": "target",
    "move_pct": 5.326,
    "margin_pct": 52.26
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 59.19,
+   "exit": 57.75572797508956,
+   "stop": 59.90713601245521,
+   "target": 57.75572797508956,
+   "open_time": 1792746000000,
+   "close_time": 1792793049241,
+   "result": "target",
+   "move_pct": 2.423,
+   "margin_pct": 23.23
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 1217.66,
+   "exit": 1223.35,
+   "stop": 1178.999946460225,
+   "target": 1294.9801070795502,
+   "open_time": 1792692000000,
+   "close_time": 1792792800000,
+   "result": "reverse",
+   "move_pct": 0.467,
+   "margin_pct": 3.67
   }
  ],
  "settings": {
@@ -872,5 +882,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792782674866
+ "updated": 1792793123268
 }
