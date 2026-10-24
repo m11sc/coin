@@ -1,22 +1,13 @@
 {
  "open": [
   {
-   "symbol": "ADA-USD",
+   "symbol": "ENA-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 0.2145,
-   "stop": 0.21770042862435018,
-   "target": 0.2080991427512996,
-   "time": 1792778400000
-  },
-  {
-   "symbol": "SUI-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.982,
-   "stop": 0.9968544623889493,
-   "target": 0.9522910752221014,
-   "time": 1792778400000
+   "entry": 0.19903,
+   "stop": 0.20636973158161376,
+   "target": 0.1843505368367725,
+   "time": 1792796400000
   }
  ],
  "closed": [
@@ -873,6 +864,34 @@
    "result": "reverse",
    "move_pct": 0.467,
    "margin_pct": 3.67
+  },
+  {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.2145,
+   "exit": 0.2080991427512996,
+   "stop": 0.21770042862435018,
+   "target": 0.2080991427512996,
+   "open_time": 1792778400000,
+   "close_time": 1792801619404,
+   "result": "target",
+   "move_pct": 2.984,
+   "margin_pct": 28.84
+  },
+  {
+   "symbol": "SUI-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.982,
+   "exit": 0.9522910752221014,
+   "stop": 0.9968544623889493,
+   "target": 0.9522910752221014,
+   "open_time": 1792778400000,
+   "close_time": 1792801812645,
+   "result": "target",
+   "move_pct": 3.025,
+   "margin_pct": 29.25
   }
  ],
  "settings": {
@@ -882,5 +901,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792793123268
+ "updated": 1792801855461
 }
