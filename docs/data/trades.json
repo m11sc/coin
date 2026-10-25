@@ -17,15 +17,6 @@
    "stop": 2372.122158633382,
    "target": 2306.985682733236,
    "time": 1792904400000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 56.339,
-   "stop": 56.98179139055967,
-   "target": 55.05341721888065,
-   "time": 1792904400000
   }
  ],
  "closed": [
@@ -938,6 +929,20 @@
    "result": "stop",
    "move_pct": -2.147,
    "margin_pct": -22.47
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 56.339,
+   "exit": 56.98179139055967,
+   "stop": 56.98179139055967,
+   "target": 55.05341721888065,
+   "open_time": 1792904400000,
+   "close_time": 1792952239342,
+   "result": "stop",
+   "move_pct": -1.141,
+   "margin_pct": -12.41
   }
  ],
  "settings": {
@@ -947,5 +952,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792909235350
+ "updated": 1792952326008
 }
