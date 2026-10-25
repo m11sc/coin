@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "PEPE-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 4.51e-06,
+   "stop": 4.413148745555476e-06,
+   "target": 4.703702508889047e-06,
+   "time": 1792886400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -905,5 +915,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792860070537
+ "updated": 1792891390868
 }
