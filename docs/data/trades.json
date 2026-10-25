@@ -1,13 +1,31 @@
 {
  "open": [
   {
-   "symbol": "PEPE-USD",
+   "symbol": "DOGE-USD",
    "interval": "1h",
-   "side": "long",
-   "entry": 4.51e-06,
-   "stop": 4.413148745555476e-06,
-   "target": 4.703702508889047e-06,
-   "time": 1792886400000
+   "side": "short",
+   "entry": 0.07698,
+   "stop": 0.07779933557423685,
+   "target": 0.0753413288515263,
+   "time": 1792904400000
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2350.41,
+   "stop": 2372.122158633382,
+   "target": 2306.985682733236,
+   "time": 1792904400000
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 56.339,
+   "stop": 56.98179139055967,
+   "target": 55.05341721888065,
+   "time": 1792904400000
   }
  ],
  "closed": [
@@ -906,6 +924,20 @@
    "result": "target",
    "move_pct": 7.376,
    "margin_pct": 72.76
+  },
+  {
+   "symbol": "PEPE-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 4.51e-06,
+   "exit": 4.413148745555476e-06,
+   "stop": 4.413148745555476e-06,
+   "target": 4.703702508889047e-06,
+   "open_time": 1792886400000,
+   "close_time": 1792909136154,
+   "result": "stop",
+   "move_pct": -2.147,
+   "margin_pct": -22.47
   }
  ],
  "settings": {
@@ -915,5 +947,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792891390868
+ "updated": 1792909235350
 }
