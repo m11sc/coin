@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "DOGE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.07698,
-   "stop": 0.07779933557423685,
-   "target": 0.0753413288515263,
-   "time": 1792904400000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -962,6 +952,20 @@
    "result": "target",
    "move_pct": 1.848,
    "margin_pct": 17.48
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.07698,
+   "exit": 0.07779933557423685,
+   "stop": 0.07779933557423685,
+   "target": 0.0753413288515263,
+   "open_time": 1792904400000,
+   "close_time": 1793035538075,
+   "result": "stop",
+   "move_pct": -1.064,
+   "margin_pct": -11.64
   }
  ],
  "settings": {
@@ -971,5 +975,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792992272818
+ "updated": 1793035712064
 }
