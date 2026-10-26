@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.2869,
+   "stop": 1.3028430700316402,
+   "target": 1.2550138599367195,
+   "time": 1793044800000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -975,5 +985,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793035712064
+ "updated": 1793051092120
 }
