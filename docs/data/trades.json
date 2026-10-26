@@ -8,15 +8,6 @@
    "stop": 0.07779933557423685,
    "target": 0.0753413288515263,
    "time": 1792904400000
-  },
-  {
-   "symbol": "ETH-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2350.41,
-   "stop": 2372.122158633382,
-   "target": 2306.985682733236,
-   "time": 1792904400000
   }
  ],
  "closed": [
@@ -957,6 +948,20 @@
    "result": "stop",
    "move_pct": -0.887,
    "margin_pct": -9.87
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2350.41,
+   "exit": 2306.985682733236,
+   "stop": 2372.122158633382,
+   "target": 2306.985682733236,
+   "open_time": 1792904400000,
+   "close_time": 1792992155057,
+   "result": "target",
+   "move_pct": 1.848,
+   "margin_pct": 17.48
   }
  ],
  "settings": {
@@ -966,5 +971,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1792975691620
+ "updated": 1792992272818
 }
