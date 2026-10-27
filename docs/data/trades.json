@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "XRP-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1.2869,
-   "stop": 1.3028430700316402,
-   "target": 1.2550138599367195,
-   "time": 1793044800000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -976,6 +966,20 @@
    "result": "stop",
    "move_pct": -1.064,
    "margin_pct": -11.64
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.2869,
+   "exit": 1.3028430700316402,
+   "stop": 1.3028430700316402,
+   "target": 1.2550138599367195,
+   "open_time": 1793044800000,
+   "close_time": 1793062393536,
+   "result": "stop",
+   "move_pct": -1.239,
+   "margin_pct": -13.39
   }
  ],
  "settings": {
@@ -985,5 +989,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793051092120
+ "updated": 1793062403475
 }
