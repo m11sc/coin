@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ENA-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 0.21256,
-   "stop": 0.20512356875893734,
-   "target": 0.22743286248212533,
-   "time": 1793113200000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -990,6 +980,20 @@
    "result": "stop",
    "move_pct": -1.239,
    "margin_pct": -13.39
+  },
+  {
+   "symbol": "ENA-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.21256,
+   "exit": 0.20512356875893734,
+   "stop": 0.20512356875893734,
+   "target": 0.22743286248212533,
+   "open_time": 1793113200000,
+   "close_time": 1793182961419,
+   "result": "stop",
+   "move_pct": -3.499,
+   "margin_pct": -35.99
   }
  ],
  "settings": {
@@ -999,5 +1003,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793117751559
+ "updated": 1793183116922
 }
