@@ -1,24 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ETH-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2331.62,
-   "stop": 2353.0104099892756,
-   "target": 2288.8391800214486,
-   "time": 1793199600000
-  },
-  {
-   "symbol": "NEAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 4.6259,
-   "stop": 4.722412123101538,
-   "target": 4.432875753796924,
-   "time": 1793199600000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1013,6 +994,34 @@
    "result": "stop",
    "move_pct": -3.499,
    "margin_pct": -35.99
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2331.62,
+   "exit": 2353.0104099892756,
+   "stop": 2353.0104099892756,
+   "target": 2288.8391800214486,
+   "open_time": 1793199600000,
+   "close_time": 1793222459614,
+   "result": "stop",
+   "move_pct": -0.917,
+   "margin_pct": -10.17
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 4.6259,
+   "exit": 4.722412123101538,
+   "stop": 4.722412123101538,
+   "target": 4.432875753796924,
+   "open_time": 1793199600000,
+   "close_time": 1793222512439,
+   "result": "stop",
+   "move_pct": -2.086,
+   "margin_pct": -21.86
   }
  ],
  "settings": {
@@ -1022,5 +1031,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793206046148
+ "updated": 1793222587252
 }
