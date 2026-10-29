@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "LIGHTER-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 3.2,
+   "stop": 3.086145308231505,
+   "target": 3.4277093835369907,
+   "time": 1793275200000
+  },
+  {
    "symbol": "LTC-USD",
    "interval": "1h",
    "side": "short",
@@ -8,6 +17,24 @@
    "stop": 58.723986736357546,
    "target": 55.4930265272849,
    "time": 1793250000000
+  },
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 0.0044,
+   "stop": 0.004272804640957156,
+   "target": 0.0046543907180856894,
+   "time": 1793275200000
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 7.2109,
+   "stop": 7.063460345147886,
+   "target": 7.505779309704227,
+   "time": 1793275200000
   }
  ],
  "closed": [
@@ -1041,5 +1068,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793257114612
+ "updated": 1793281982514
 }
