@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 57.647,
+   "stop": 58.723986736357546,
+   "target": 55.4930265272849,
+   "time": 1793250000000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1031,5 +1041,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793222587252
+ "updated": 1793257114612
 }
