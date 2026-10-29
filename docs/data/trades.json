@@ -1,39 +1,12 @@
 {
  "open": [
   {
-   "symbol": "LIGHTER-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 3.2,
-   "stop": 3.086145308231505,
-   "target": 3.4277093835369907,
-   "time": 1793275200000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 57.647,
-   "stop": 58.723986736357546,
-   "target": 55.4930265272849,
-   "time": 1793250000000
-  },
-  {
    "symbol": "PUMP-USD",
    "interval": "1h",
    "side": "long",
    "entry": 0.0044,
    "stop": 0.004272804640957156,
    "target": 0.0046543907180856894,
-   "time": 1793275200000
-  },
-  {
-   "symbol": "UNI-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 7.2109,
-   "stop": 7.063460345147886,
-   "target": 7.505779309704227,
    "time": 1793275200000
   }
  ],
@@ -1059,6 +1032,48 @@
    "result": "stop",
    "move_pct": -2.086,
    "margin_pct": -21.86
+  },
+  {
+   "symbol": "LIGHTER-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 3.2,
+   "exit": 3.086145308231505,
+   "stop": 3.086145308231505,
+   "target": 3.4277093835369907,
+   "open_time": 1793275200000,
+   "close_time": 1793301590796,
+   "result": "stop",
+   "move_pct": -3.558,
+   "margin_pct": -36.58
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 57.647,
+   "exit": 58.723986736357546,
+   "stop": 58.723986736357546,
+   "target": 55.4930265272849,
+   "open_time": 1793250000000,
+   "close_time": 1793301596909,
+   "result": "stop",
+   "move_pct": -1.868,
+   "margin_pct": -19.68
+  },
+  {
+   "symbol": "UNI-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 7.2109,
+   "exit": 7.505779309704227,
+   "stop": 7.063460345147886,
+   "target": 7.505779309704227,
+   "open_time": 1793275200000,
+   "close_time": 1793301703669,
+   "result": "target",
+   "move_pct": 4.089,
+   "margin_pct": 39.89
   }
  ],
  "settings": {
@@ -1068,5 +1083,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793281982514
+ "updated": 1793301734945
 }
