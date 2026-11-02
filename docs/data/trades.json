@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ZEC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1251.07,
-   "stop": 1276.4176777290295,
-   "target": 1200.3746445419406,
-   "time": 1793487600000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1116,6 +1106,20 @@
    "result": "reverse",
    "move_pct": -1.002,
    "margin_pct": -11.02
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1251.07,
+   "exit": 1276.4176777290295,
+   "stop": 1276.4176777290295,
+   "target": 1200.3746445419406,
+   "open_time": 1793487600000,
+   "close_time": 1793607264199,
+   "result": "stop",
+   "move_pct": -2.026,
+   "margin_pct": -21.26
   }
  ],
  "settings": {
@@ -1125,5 +1129,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793493345681
+ "updated": 1793607268838
 }
