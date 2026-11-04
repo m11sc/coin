@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 53.685,
+   "stop": 54.36269099885297,
+   "target": 52.32961800229406,
+   "time": 1793750400000
+  },
+  {
    "symbol": "QNT-USD",
    "interval": "1h",
    "side": "short",
@@ -1153,5 +1162,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793719838827
+ "updated": 1793755268618
 }
