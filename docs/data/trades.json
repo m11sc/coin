@@ -1,5 +1,33 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.58754,
+   "stop": 0.6059955019753362,
+   "target": 0.5506289960493274,
+   "time": 1793890800000
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.2438,
+   "stop": 1.2650335606997085,
+   "target": 1.2013328786005828,
+   "time": 1793890800000
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1235.24,
+   "stop": 1275.8215362062808,
+   "target": 1154.0769275874384,
+   "time": 1793890800000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1185,5 +1213,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793807048901
+ "updated": 1793896953817
 }
