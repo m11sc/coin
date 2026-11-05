@@ -1,30 +1,12 @@
 {
  "open": [
   {
-   "symbol": "AERO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.58754,
-   "stop": 0.6059955019753362,
-   "target": 0.5506289960493274,
-   "time": 1793890800000
-  },
-  {
    "symbol": "XRP-USD",
    "interval": "1h",
    "side": "short",
    "entry": 1.2438,
    "stop": 1.2650335606997085,
    "target": 1.2013328786005828,
-   "time": 1793890800000
-  },
-  {
-   "symbol": "ZEC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1235.24,
-   "stop": 1275.8215362062808,
-   "target": 1154.0769275874384,
    "time": 1793890800000
   }
  ],
@@ -1204,6 +1186,34 @@
    "result": "target",
    "move_pct": 2.441,
    "margin_pct": 23.41
+  },
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.58754,
+   "exit": 0.6059955019753362,
+   "stop": 0.6059955019753362,
+   "target": 0.5506289960493274,
+   "open_time": 1793890800000,
+   "close_time": 1793916896957,
+   "result": "stop",
+   "move_pct": -3.141,
+   "margin_pct": -32.41
+  },
+  {
+   "symbol": "ZEC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1235.24,
+   "exit": 1275.8215362062808,
+   "stop": 1275.8215362062808,
+   "target": 1154.0769275874384,
+   "open_time": 1793890800000,
+   "close_time": 1793917075803,
+   "result": "stop",
+   "move_pct": -3.285,
+   "margin_pct": -33.85
   }
  ],
  "settings": {
@@ -1213,5 +1223,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793896953817
+ "updated": 1793917080586
 }
