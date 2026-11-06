@@ -1,13 +1,13 @@
 {
  "open": [
   {
-   "symbol": "XRP-USD",
+   "symbol": "ZEC-USD",
    "interval": "1h",
-   "side": "short",
-   "entry": 1.2438,
-   "stop": 1.2650335606997085,
-   "target": 1.2013328786005828,
-   "time": 1793890800000
+   "side": "long",
+   "entry": 1306.32,
+   "stop": 1256.329339363671,
+   "target": 1406.301321272658,
+   "time": 1793926800000
   }
  ],
  "closed": [
@@ -1214,6 +1214,20 @@
    "result": "stop",
    "move_pct": -3.285,
    "margin_pct": -33.85
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.2438,
+   "exit": 1.2013328786005828,
+   "stop": 1.2650335606997085,
+   "target": 1.2013328786005828,
+   "open_time": 1793890800000,
+   "close_time": 1793932194960,
+   "result": "target",
+   "move_pct": 3.414,
+   "margin_pct": 33.14
   }
  ],
  "settings": {
@@ -1223,5 +1237,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793917080586
+ "updated": 1793932204378
 }
