@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 75653.87,
+   "stop": 75926.73650964917,
+   "target": 75108.13698070165,
+   "time": 1794157200000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1241,5 +1251,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1793957995855
+ "updated": 1794164376429
 }
