@@ -1,13 +1,13 @@
 {
  "open": [
   {
-   "symbol": "BTC-USD",
+   "symbol": "PUMP-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 75653.87,
-   "stop": 75926.73650964917,
-   "target": 75108.13698070165,
-   "time": 1794157200000
+   "entry": 0.00354,
+   "stop": 0.00363915690527137,
+   "target": 0.00334168618945726,
+   "time": 1794171600000
   }
  ],
  "closed": [
@@ -1242,6 +1242,20 @@
    "result": "stop",
    "move_pct": -3.827,
    "margin_pct": -39.27
+  },
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 75653.87,
+   "exit": 75108.13698070165,
+   "stop": 75926.73650964917,
+   "target": 75108.13698070165,
+   "open_time": 1794157200000,
+   "close_time": 1794177316592,
+   "result": "target",
+   "move_pct": 0.721,
+   "margin_pct": 6.21
   }
  ],
  "settings": {
@@ -1251,5 +1265,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794164376429
+ "updated": 1794177454754
 }
