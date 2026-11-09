@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "QNT-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 193.09,
-   "stop": 198.1120202774035,
-   "target": 183.045959445193,
-   "time": 1794207600000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1270,6 +1260,20 @@
    "result": "stop",
    "move_pct": -2.801,
    "margin_pct": -29.01
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 193.09,
+   "exit": 198.1120202774035,
+   "stop": 198.1120202774035,
+   "target": 183.045959445193,
+   "open_time": 1794207600000,
+   "close_time": 1794251653454,
+   "result": "stop",
+   "move_pct": -2.601,
+   "margin_pct": -27.01
   }
  ],
  "settings": {
@@ -1279,5 +1283,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794214126170
+ "updated": 1794251708136
 }
