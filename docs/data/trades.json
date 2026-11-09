@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "PUMP-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.00354,
-   "stop": 0.00363915690527137,
-   "target": 0.00334168618945726,
-   "time": 1794171600000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1256,6 +1246,20 @@
    "result": "target",
    "move_pct": 0.721,
    "margin_pct": 6.21
+  },
+  {
+   "symbol": "PUMP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.00354,
+   "exit": 0.00363915690527137,
+   "stop": 0.00363915690527137,
+   "target": 0.00334168618945726,
+   "open_time": 1794171600000,
+   "close_time": 1794189467056,
+   "result": "stop",
+   "move_pct": -2.801,
+   "margin_pct": -29.01
   }
  ],
  "settings": {
@@ -1265,5 +1269,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794177454754
+ "updated": 1794189537098
 }
