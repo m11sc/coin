@@ -1,5 +1,24 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.4851,
+   "stop": 3.6040710515671446,
+   "target": 3.247157896865711,
+   "time": 1794326400000
+  },
+  {
+   "symbol": "ONDO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.35973,
+   "stop": 0.3713615646737349,
+   "target": 0.33646687065253017,
+   "time": 1794326400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1283,5 +1302,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794251708136
+ "updated": 1794331189921
 }
