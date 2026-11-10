@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "NEAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 3.4851,
-   "stop": 3.6040710515671446,
-   "target": 3.247157896865711,
-   "time": 1794326400000
-  },
-  {
    "symbol": "ONDO-USD",
    "interval": "1h",
    "side": "short",
@@ -1293,6 +1284,20 @@
    "result": "stop",
    "move_pct": -2.601,
    "margin_pct": -27.01
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.4851,
+   "exit": 3.6040710515671446,
+   "stop": 3.6040710515671446,
+   "target": 3.247157896865711,
+   "open_time": 1794326400000,
+   "close_time": 1794349450494,
+   "result": "stop",
+   "move_pct": -3.414,
+   "margin_pct": -35.14
   }
  ],
  "settings": {
@@ -1302,5 +1307,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794331189921
+ "updated": 1794349509722
 }
