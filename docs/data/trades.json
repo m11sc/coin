@@ -1,5 +1,42 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "LINK-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 10.159,
+   "stop": 10.340149260266903,
+   "target": 9.796701479466195,
+   "time": 1794434400000
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 50.076,
+   "stop": 50.78989136302056,
+   "target": 48.648217273958885,
+   "time": 1794434400000
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 215.91,
+   "stop": 219.85538470282788,
+   "target": 208.01923059434426,
+   "time": 1794434400000
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0524,
+   "stop": 1.0692255455706083,
+   "target": 1.018748908858783,
+   "time": 1794434400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1311,5 +1348,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794362533970
+ "updated": 1794438343598
 }
