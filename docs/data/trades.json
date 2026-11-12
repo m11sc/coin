@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 73711.77,
+   "stop": 74447.83573454742,
+   "target": 72239.63853090518,
+   "time": 1794448800000
+  },
+  {
    "symbol": "LINK-USD",
    "interval": "1h",
    "side": "short",
@@ -1348,5 +1357,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794438343598
+ "updated": 1794455053550
 }
