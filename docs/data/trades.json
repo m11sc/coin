@@ -1,51 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "BTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 73711.77,
-   "stop": 74447.83573454742,
-   "target": 72239.63853090518,
-   "time": 1794448800000
-  },
-  {
-   "symbol": "LINK-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 10.159,
-   "stop": 10.340149260266903,
-   "target": 9.796701479466195,
-   "time": 1794434400000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 50.076,
-   "stop": 50.78989136302056,
-   "target": 48.648217273958885,
-   "time": 1794434400000
-  },
-  {
-   "symbol": "TAO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 215.91,
-   "stop": 219.85538470282788,
-   "target": 208.01923059434426,
-   "time": 1794434400000
-  },
-  {
-   "symbol": "XRP-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1.0524,
-   "stop": 1.0692255455706083,
-   "target": 1.018748908858783,
-   "time": 1794434400000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1348,6 +1302,76 @@
    "result": "stop",
    "move_pct": -3.233,
    "margin_pct": -33.33
+  },
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 73711.77,
+   "exit": 72239.63853090518,
+   "stop": 74447.83573454742,
+   "target": 72239.63853090518,
+   "open_time": 1794448800000,
+   "close_time": 1794510702567,
+   "result": "target",
+   "move_pct": 1.997,
+   "margin_pct": 18.97
+  },
+  {
+   "symbol": "LINK-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 10.159,
+   "exit": 9.796701479466195,
+   "stop": 10.340149260266903,
+   "target": 9.796701479466195,
+   "open_time": 1794434400000,
+   "close_time": 1794510761076,
+   "result": "target",
+   "move_pct": 3.566,
+   "margin_pct": 34.66
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 50.076,
+   "exit": 48.648217273958885,
+   "stop": 50.78989136302056,
+   "target": 48.648217273958885,
+   "open_time": 1794434400000,
+   "close_time": 1794510763880,
+   "result": "target",
+   "move_pct": 2.851,
+   "margin_pct": 27.51
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 215.91,
+   "exit": 208.01923059434426,
+   "stop": 219.85538470282788,
+   "target": 208.01923059434426,
+   "open_time": 1794434400000,
+   "close_time": 1794510818337,
+   "result": "target",
+   "move_pct": 3.655,
+   "margin_pct": 35.55
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1.0524,
+   "exit": 1.018748908858783,
+   "stop": 1.0692255455706083,
+   "target": 1.018748908858783,
+   "open_time": 1794434400000,
+   "close_time": 1794510835706,
+   "result": "target",
+   "move_pct": 3.198,
+   "margin_pct": 30.98
   }
  ],
  "settings": {
@@ -1357,5 +1381,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794455053550
+ "updated": 1794510842775
 }
