@@ -1,5 +1,15 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "XLM-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.145765,
+   "stop": 0.1485881023816549,
+   "target": 0.1401187952366902,
+   "time": 1794614400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1381,5 +1391,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794510842775
+ "updated": 1794619635886
 }
