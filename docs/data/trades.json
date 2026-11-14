@@ -1,13 +1,13 @@
 {
  "open": [
   {
-   "symbol": "XLM-USD",
+   "symbol": "INJ-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 0.145765,
-   "stop": 0.1485881023816549,
-   "target": 0.1401187952366902,
-   "time": 1794614400000
+   "entry": 7.756,
+   "stop": 7.987277809083668,
+   "target": 7.293444381832664,
+   "time": 1794661200000
   }
  ],
  "closed": [
@@ -1382,6 +1382,20 @@
    "result": "target",
    "move_pct": 3.198,
    "margin_pct": 30.98
+  },
+  {
+   "symbol": "XLM-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.145765,
+   "exit": 0.1401187952366902,
+   "stop": 0.1485881023816549,
+   "target": 0.1401187952366902,
+   "open_time": 1794614400000,
+   "close_time": 1794666748064,
+   "result": "target",
+   "move_pct": 3.873,
+   "margin_pct": 37.73
   }
  ],
  "settings": {
@@ -1391,5 +1405,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794619635886
+ "updated": 1794666754613
 }
