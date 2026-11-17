@@ -1,6 +1,24 @@
 {
  "open": [
   {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.15124,
+   "stop": 0.15432142694912454,
+   "target": 0.14507714610175093,
+   "time": 1794931200000
+  },
+  {
+   "symbol": "AVAX-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 7.031,
+   "stop": 7.185086518233626,
+   "target": 6.722826963532747,
+   "time": 1794931200000
+  },
+  {
    "symbol": "LTC-USD",
    "interval": "1h",
    "side": "short",
@@ -10,13 +28,13 @@
    "time": 1794787200000
   },
   {
-   "symbol": "XRP-USD",
+   "symbol": "QNT-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 0.9545,
-   "stop": 0.9717542046627022,
-   "target": 0.9199915906745956,
-   "time": 1794870000000
+   "entry": 150.87,
+   "stop": 154.67381402646055,
+   "target": 143.2623719470789,
+   "time": 1794931200000
   }
  ],
  "closed": [
@@ -1419,6 +1437,20 @@
    "result": "target",
    "move_pct": 5.964,
    "margin_pct": 58.64
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.9545,
+   "exit": 0.9717542046627022,
+   "stop": 0.9717542046627022,
+   "target": 0.9199915906745956,
+   "open_time": 1794870000000,
+   "close_time": 1794938146237,
+   "result": "stop",
+   "move_pct": -1.808,
+   "margin_pct": -19.08
   }
  ],
  "settings": {
@@ -1428,5 +1460,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794877190431
+ "updated": 1794938163295
 }
