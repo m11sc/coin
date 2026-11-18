@@ -1,42 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ADA-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.15124,
-   "stop": 0.15432142694912454,
-   "target": 0.14507714610175093,
-   "time": 1794931200000
-  },
-  {
-   "symbol": "AVAX-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 7.031,
-   "stop": 7.185086518233626,
-   "target": 6.722826963532747,
-   "time": 1794931200000
-  },
-  {
-   "symbol": "LTC-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 45.136,
-   "stop": 45.97182149655436,
-   "target": 43.46435700689128,
-   "time": 1794787200000
-  },
-  {
-   "symbol": "QNT-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 150.87,
-   "stop": 154.67381402646055,
-   "target": 143.2623719470789,
-   "time": 1794931200000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1451,6 +1414,62 @@
    "result": "stop",
    "move_pct": -1.808,
    "margin_pct": -19.08
+  },
+  {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.15124,
+   "exit": 0.15432142694912454,
+   "stop": 0.15432142694912454,
+   "target": 0.14507714610175093,
+   "open_time": 1794931200000,
+   "close_time": 1794960116084,
+   "result": "stop",
+   "move_pct": -2.037,
+   "margin_pct": -21.37
+  },
+  {
+   "symbol": "AVAX-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 7.031,
+   "exit": 7.185086518233626,
+   "stop": 7.185086518233626,
+   "target": 6.722826963532747,
+   "open_time": 1794931200000,
+   "close_time": 1794960135962,
+   "result": "stop",
+   "move_pct": -2.192,
+   "margin_pct": -22.92
+  },
+  {
+   "symbol": "LTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 45.136,
+   "exit": 45.342,
+   "stop": 45.97182149655436,
+   "target": 43.46435700689128,
+   "open_time": 1794787200000,
+   "close_time": 1794960000000,
+   "result": "reverse",
+   "move_pct": -0.456,
+   "margin_pct": -5.56
+  },
+  {
+   "symbol": "QNT-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 150.87,
+   "exit": 154.67381402646055,
+   "stop": 154.67381402646055,
+   "target": 143.2623719470789,
+   "open_time": 1794931200000,
+   "close_time": 1794960280543,
+   "result": "stop",
+   "move_pct": -2.521,
+   "margin_pct": -26.21
   }
  ],
  "settings": {
@@ -1460,5 +1479,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794938163295
+ "updated": 1794960346493
 }
