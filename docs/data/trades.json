@@ -1,5 +1,24 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.43993,
+   "stop": 0.4486281585922473,
+   "target": 0.4225336828155053,
+   "time": 1794978000000
+  },
+  {
+   "symbol": "VVV-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 21.2391,
+   "stop": 20.57828941134153,
+   "target": 22.560721177316942,
+   "time": 1794978000000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1479,5 +1498,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794960346493
+ "updated": 1794984905361
 }
