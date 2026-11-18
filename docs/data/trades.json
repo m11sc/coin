@@ -1,6 +1,15 @@
 {
  "open": [
   {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.15244,
+   "stop": 0.15481364851617727,
+   "target": 0.14769270296764542,
+   "time": 1795010400000
+  },
+  {
    "symbol": "AERO-USD",
    "interval": "1h",
    "side": "short",
@@ -8,6 +17,33 @@
    "stop": 0.4486281585922473,
    "target": 0.4225336828155053,
    "time": 1794978000000
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.05866,
+   "stop": 0.059515437939103216,
+   "target": 0.05694912412179355,
+   "time": 1795014000000
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.208,
+   "stop": 3.2971526270020433,
+   "target": 3.0296947459959136,
+   "time": 1795014000000
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 191.87,
+   "stop": 195.57346744654654,
+   "target": 184.46306510690692,
+   "time": 1795014000000
   },
   {
    "symbol": "VVV-USD",
@@ -1498,5 +1534,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1794984905361
+ "updated": 1795017749149
 }
