@@ -10,15 +10,6 @@
    "time": 1795010400000
   },
   {
-   "symbol": "AERO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.43993,
-   "stop": 0.4486281585922473,
-   "target": 0.4225336828155053,
-   "time": 1794978000000
-  },
-  {
    "symbol": "DOGE-USD",
    "interval": "1h",
    "side": "short",
@@ -44,15 +35,6 @@
    "stop": 195.57346744654654,
    "target": 184.46306510690692,
    "time": 1795014000000
-  },
-  {
-   "symbol": "VVV-USD",
-   "interval": "1h",
-   "side": "long",
-   "entry": 21.2391,
-   "stop": 20.57828941134153,
-   "target": 22.560721177316942,
-   "time": 1794978000000
   }
  ],
  "closed": [
@@ -1525,6 +1507,34 @@
    "result": "stop",
    "move_pct": -2.521,
    "margin_pct": -26.21
+  },
+  {
+   "symbol": "AERO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.43993,
+   "exit": 0.4225336828155053,
+   "stop": 0.4486281585922473,
+   "target": 0.4225336828155053,
+   "open_time": 1794978000000,
+   "close_time": 1795042278600,
+   "result": "target",
+   "move_pct": 3.954,
+   "margin_pct": 38.54
+  },
+  {
+   "symbol": "VVV-USD",
+   "interval": "1h",
+   "side": "long",
+   "entry": 21.2391,
+   "exit": 20.57828941134153,
+   "stop": 20.57828941134153,
+   "target": 22.560721177316942,
+   "open_time": 1794978000000,
+   "close_time": 1795042441348,
+   "result": "stop",
+   "move_pct": -3.111,
+   "margin_pct": -32.11
   }
  ],
  "settings": {
@@ -1534,5 +1544,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795017749149
+ "updated": 1795042456701
 }
