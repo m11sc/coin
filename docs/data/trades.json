@@ -8,24 +8,6 @@
    "stop": 0.15481364851617727,
    "target": 0.14769270296764542,
    "time": 1795010400000
-  },
-  {
-   "symbol": "DOGE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.05866,
-   "stop": 0.059515437939103216,
-   "target": 0.05694912412179355,
-   "time": 1795014000000
-  },
-  {
-   "symbol": "TAO-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 191.87,
-   "stop": 195.57346744654654,
-   "target": 184.46306510690692,
-   "time": 1795014000000
   }
  ],
  "closed": [
@@ -1540,6 +1522,34 @@
    "result": "stop",
    "move_pct": -2.779,
    "margin_pct": -28.79
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.05866,
+   "exit": 0.059515437939103216,
+   "stop": 0.059515437939103216,
+   "target": 0.05694912412179355,
+   "open_time": 1795014000000,
+   "close_time": 1795090607290,
+   "result": "stop",
+   "move_pct": -1.458,
+   "margin_pct": -15.58
+  },
+  {
+   "symbol": "TAO-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 191.87,
+   "exit": 195.57346744654654,
+   "stop": 195.57346744654654,
+   "target": 184.46306510690692,
+   "open_time": 1795014000000,
+   "close_time": 1795090739076,
+   "result": "stop",
+   "move_pct": -1.93,
+   "margin_pct": -20.3
   }
  ],
  "settings": {
@@ -1549,5 +1559,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795060547541
+ "updated": 1795090770975
 }
