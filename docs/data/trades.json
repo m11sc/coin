@@ -1,15 +1,5 @@
 {
- "open": [
-  {
-   "symbol": "ADA-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.15244,
-   "stop": 0.15481364851617727,
-   "target": 0.14769270296764542,
-   "time": 1795010400000
-  }
- ],
+ "open": [],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1550,6 +1540,20 @@
    "result": "stop",
    "move_pct": -1.93,
    "margin_pct": -20.3
+  },
+  {
+   "symbol": "ADA-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.15244,
+   "exit": 0.15481364851617727,
+   "stop": 0.15481364851617727,
+   "target": 0.14769270296764542,
+   "open_time": 1795010400000,
+   "close_time": 1795120734296,
+   "result": "stop",
+   "move_pct": -1.557,
+   "margin_pct": -16.57
   }
  ],
  "settings": {
@@ -1559,5 +1563,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795090770975
+ "updated": 1795120949662
 }
