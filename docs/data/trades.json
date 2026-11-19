@@ -19,15 +19,6 @@
    "time": 1795014000000
   },
   {
-   "symbol": "NEAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 3.208,
-   "stop": 3.2971526270020433,
-   "target": 3.0296947459959136,
-   "time": 1795014000000
-  },
-  {
    "symbol": "TAO-USD",
    "interval": "1h",
    "side": "short",
@@ -1535,6 +1526,20 @@
    "result": "stop",
    "move_pct": -3.111,
    "margin_pct": -32.11
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 3.208,
+   "exit": 3.2971526270020433,
+   "stop": 3.2971526270020433,
+   "target": 3.0296947459959136,
+   "open_time": 1795014000000,
+   "close_time": 1795060487505,
+   "result": "stop",
+   "move_pct": -2.779,
+   "margin_pct": -28.79
   }
  ],
  "settings": {
@@ -1544,5 +1549,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795042456701
+ "updated": 1795060547541
 }
