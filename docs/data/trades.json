@@ -1,5 +1,24 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "INJ-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 6.264,
+   "stop": 6.477320264066966,
+   "target": 5.837359471866068,
+   "time": 1795478400000
+  },
+  {
+   "symbol": "XRP-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.942,
+   "stop": 0.9622953565678865,
+   "target": 0.9014092868642269,
+   "time": 1795478400000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1563,5 +1582,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795120949662
+ "updated": 1795484896914
 }
