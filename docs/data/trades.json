@@ -1,15 +1,6 @@
 {
  "open": [
   {
-   "symbol": "INJ-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 6.264,
-   "stop": 6.477320264066966,
-   "target": 5.837359471866068,
-   "time": 1795478400000
-  },
-  {
    "symbol": "XRP-USD",
    "interval": "1h",
    "side": "short",
@@ -1573,6 +1564,20 @@
    "result": "stop",
    "move_pct": -1.557,
    "margin_pct": -16.57
+  },
+  {
+   "symbol": "INJ-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 6.264,
+   "exit": 5.837359471866068,
+   "stop": 6.477320264066966,
+   "target": 5.837359471866068,
+   "open_time": 1795478400000,
+   "close_time": 1795555861089,
+   "result": "target",
+   "move_pct": 6.811,
+   "margin_pct": 67.11
   }
  ],
  "settings": {
@@ -1582,5 +1587,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795484896914
+ "updated": 1795555979599
 }
