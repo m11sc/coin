@@ -1,5 +1,51 @@
 {
- "open": [],
+ "open": [
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 59130.39,
+   "stop": 59952.99098484171,
+   "target": 57485.18803031658,
+   "time": 1795788000000
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.05665,
+   "stop": 0.05755599945959223,
+   "target": 0.05483800108081553,
+   "time": 1795788000000
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1652.82,
+   "stop": 1679.313490493905,
+   "target": 1599.8330190121897,
+   "time": 1795788000000
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2.9601,
+   "stop": 3.0340667249342674,
+   "target": 2.812166550131465,
+   "time": 1795788000000
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 70.82,
+   "stop": 71.92895710739728,
+   "target": 68.60208578520542,
+   "time": 1795788000000
+  }
+ ],
  "closed": [
   {
    "symbol": "PUMP-USD",
@@ -1591,5 +1637,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795618180196
+ "updated": 1795792975199
 }
