@@ -1,49 +1,13 @@
 {
  "open": [
   {
-   "symbol": "BTC-USD",
+   "symbol": "ZEC-USD",
    "interval": "1h",
    "side": "short",
-   "entry": 59130.39,
-   "stop": 59952.99098484171,
-   "target": 57485.18803031658,
-   "time": 1795788000000
-  },
-  {
-   "symbol": "DOGE-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 0.05665,
-   "stop": 0.05755599945959223,
-   "target": 0.05483800108081553,
-   "time": 1795788000000
-  },
-  {
-   "symbol": "ETH-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 1652.82,
-   "stop": 1679.313490493905,
-   "target": 1599.8330190121897,
-   "time": 1795788000000
-  },
-  {
-   "symbol": "NEAR-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 2.9601,
-   "stop": 3.0340667249342674,
-   "target": 2.812166550131465,
-   "time": 1795788000000
-  },
-  {
-   "symbol": "SOL-USD",
-   "interval": "1h",
-   "side": "short",
-   "entry": 70.82,
-   "stop": 71.92895710739728,
-   "target": 68.60208578520542,
-   "time": 1795788000000
+   "entry": 728.15,
+   "stop": 753.0656475905116,
+   "target": 678.3187048189767,
+   "time": 1795816800000
   }
  ],
  "closed": [
@@ -1628,6 +1592,76 @@
    "result": "target",
    "move_pct": 4.309,
    "margin_pct": 42.09
+  },
+  {
+   "symbol": "BTC-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 59130.39,
+   "exit": 59952.99098484171,
+   "stop": 59952.99098484171,
+   "target": 57485.18803031658,
+   "open_time": 1795788000000,
+   "close_time": 1795822293724,
+   "result": "stop",
+   "move_pct": -1.391,
+   "margin_pct": -14.91
+  },
+  {
+   "symbol": "DOGE-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 0.05665,
+   "exit": 0.05755599945959223,
+   "stop": 0.05755599945959223,
+   "target": 0.05483800108081553,
+   "open_time": 1795788000000,
+   "close_time": 1795822307606,
+   "result": "stop",
+   "move_pct": -1.599,
+   "margin_pct": -16.99
+  },
+  {
+   "symbol": "ETH-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 1652.82,
+   "exit": 1679.313490493905,
+   "stop": 1679.313490493905,
+   "target": 1599.8330190121897,
+   "open_time": 1795788000000,
+   "close_time": 1795822314477,
+   "result": "stop",
+   "move_pct": -1.603,
+   "margin_pct": -17.03
+  },
+  {
+   "symbol": "NEAR-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 2.9601,
+   "exit": 3.0340667249342674,
+   "stop": 3.0340667249342674,
+   "target": 2.812166550131465,
+   "open_time": 1795788000000,
+   "close_time": 1795822351349,
+   "result": "stop",
+   "move_pct": -2.499,
+   "margin_pct": -25.99
+  },
+  {
+   "symbol": "SOL-USD",
+   "interval": "1h",
+   "side": "short",
+   "entry": 70.82,
+   "exit": 71.92895710739728,
+   "stop": 71.92895710739728,
+   "target": 68.60208578520542,
+   "open_time": 1795788000000,
+   "close_time": 1795822379071,
+   "result": "stop",
+   "move_pct": -1.566,
+   "margin_pct": -16.66
   }
  ],
  "settings": {
@@ -1637,5 +1671,5 @@
   "stop_atr": 1.5,
   "take_atr": 3.0
  },
- "updated": 1795792975199
+ "updated": 1795822405843
 }
